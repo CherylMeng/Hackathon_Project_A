@@ -1,0 +1,56 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1113" measuredH="719" mockupW="800" mockupH="600">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="313" y="119" w="800" h="600" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::SubTitle" x="360" y="229" w="-1" h="-1" measuredW="94" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Register</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::PointyButton" x="483" y="280" w="-1" h="-1" measuredW="149" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>2848996</color>
+        <text>Choose%20Account%20Type</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::PointyButton" x="647" y="280" w="-1" h="-1" measuredW="156" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>10066329</color>
+        <text>Fill%20In%20Basic%20Information</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::PointyButton" x="811" y="280" w="-1" h="-1" measuredW="123" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>10066329</color>
+        <text>Confirm%20%26%20Submit</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="557" y="376" w="-1" h="-1" measuredW="82" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Account%20Type</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::ComboBox" x="710" y="373" w="93" h="-1" measuredW="93" measuredH="24" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Requestor</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Button" x="811" y="455" w="-1" h="-1" measuredW="59" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Register%20Requestor_BasicInfo_Empty%26bm%3BRegister%20Requestor_BasicInfo_Empty.bmml%26bm%3BRegister%20Requestor_BasicInfo_Empty.bmml%26bm%3BRegister%20Requestor_BasicInfo_Empty.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22498%2C336%2C557%2C363%22%20href%3D%22Register%2520Requestor_BasicInfo_Empty.bmml%22%20alt%3D%22Register%20Requestor_BasicInfo_Empty%22%20id%3D%227%22/%3E</map>
+        <text>Next%3E</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Button" x="902" y="455" w="-1" h="-1" measuredW="64" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Log%20In%20Page%26bm%3BLog%20In%20Page.bmml%26bm%3BLog%20In%20Page.bmml%26bm%3BLog%20In%20Page.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22589%2C336%2C653%2C363%22%20href%3D%22Log%2520In%2520Page.bmml%22%20alt%3D%22Log%20In%20Page%22%20id%3D%228%22/%3E</map>
+        <text>Cancel</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

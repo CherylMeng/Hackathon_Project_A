@@ -1,0 +1,93 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1208" measuredH="664" mockupW="800" mockupH="600">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="408" y="64" w="800" h="600" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Title" x="449" y="169" w="-1" h="-1" measuredW="479" measuredH="43" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Office%20Depot%20Management</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Canvas" x="1008" y="153" w="166" h="74" measuredW="100" measuredH="70" zOrder="2" locked="false" isInGroup="-1"/>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Link" x="1023" y="168" w="-1" h="-1" measuredW="60" measuredH="19" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>To%20Do%20List</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Link" x="1023" y="193" w="-1" h="-1" measuredW="66" measuredH="19" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Notification</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::DataGrid" x="449" y="273" w="725" h="116" measuredW="785" measuredH="111" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Office%20Depot%20ID%20%5Ev%2C%20Name%20%5Ev%2C%20Price%5Ev%2C%20Catalog%20%5Ev%2C%20Actions%0A1%2C%20Office%20Depot%20Notebook%2C%20%uFFE53.00%2C%20Stationery%20Supplies%20%3E%20Notebook%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A2%2C%20Office%20Depot%20Gel-ink%20Pen%2C%20%uFFE52.50%2C%20Stationery%20Supplies%20%3E%20Pens%2C%20%0A3%2C%20Office%20Depot%20Clips%2C%20%uFFE515.00%2C%20Stationery%20Supplies%20%3E%20Clips%2C</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Link" x="951" y="297" w="-1" h="-1" measuredW="42" measuredH="19" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Homepage%20Supplier%20Officedepot_Details%26bm%3BHomepage%20Supplier%20Officedepot_Details.bmml%26bm%3BHomepage%20Supplier%20Officedepot_Details.bmml%26bm%3BHomepage%20Supplier%20Officedepot_Details.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22543%2C233%2C585%2C252%22%20href%3D%22Homepage%2520Supplier%2520Officedepot_Details.bmml%22%20alt%3D%22Homepage%20Supplier%20Officedepot_Details%22%20id%3D%227%22/%3E</map>
+        <text>Details</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Link" x="995" y="297" w="-1" h="-1" measuredW="48" measuredH="19" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Remove</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::Link" x="1046" y="297" w="-1" h="-1" measuredW="43" measuredH="19" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Homepage%20Supplier%20Officedepot_Update%26bm%3BHomepage%20Supplier%20Officedepot_Update.bmml%26bm%3BHomepage%20Supplier%20Officedepot_Update.bmml%26bm%3BHomepage%20Supplier%20Officedepot_Update.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22638%2C233%2C681%2C252%22%20href%3D%22Homepage%2520Supplier%2520Officedepot_Update.bmml%22%20alt%3D%22Homepage%20Supplier%20Officedepot_Update%22%20id%3D%2211%22/%3E</map>
+        <text>Update</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Link" x="951" y="326" w="-1" h="-1" measuredW="42" measuredH="19" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Details</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Link" x="995" y="326" w="-1" h="-1" measuredW="48" measuredH="19" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Remove</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::Link" x="1046" y="326" w="-1" h="-1" measuredW="43" measuredH="19" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Update</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Link" x="951" y="355" w="-1" h="-1" measuredW="42" measuredH="19" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Details</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Link" x="995" y="355" w="-1" h="-1" measuredW="48" measuredH="19" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Remove</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Link" x="1046" y="355" w="-1" h="-1" measuredW="43" measuredH="19" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Update</text>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Button" x="1008" y="420" w="-1" h="-1" measuredW="153" measuredH="27" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Homepage%20Supplier%20Officedepot_Add%26bm%3BHomepage%20Supplier%20Officedepot_Add.bmml%26bm%3BHomepage%20Supplier%20Officedepot_Add.bmml%26bm%3BHomepage%20Supplier%20Officedepot_Add.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22600%2C356%2C753%2C383%22%20href%3D%22Homepage%2520Supplier%2520Officedepot_Add.bmml%22%20alt%3D%22Homepage%20Supplier%20Officedepot_Add%22%20id%3D%2218%22/%3E</map>
+        <text>Add%20New%20Office%20Depot</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::Button" x="449" y="420" w="-1" h="-1" measuredW="148" measuredH="27" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Homepage%20SupplierView%26bm%3BHomepage%20SupplierView.bmml%26bm%3BHomepage%20SupplierView.bmml%26bm%3BHomepage%20SupplierView.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2241%2C356%2C189%2C383%22%20href%3D%22Homepage%2520SupplierView.bmml%22%20alt%3D%22Homepage%20SupplierView%22%20id%3D%2219%22/%3E</map>
+        <text>%3CBack%20To%20Home%20Page</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
