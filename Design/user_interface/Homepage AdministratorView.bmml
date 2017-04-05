@@ -31,6 +31,8 @@
     </control>
     <control controlID="7" controlTypeID="com.balsamiq.mockups::Link" x="456" y="292" w="-1" h="-1" measuredW="127" measuredH="19" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
+        <href>Homepage%20Administrator%20CatalogManagement%26bm%3BHomepage%20Administrator%20CatalogManagement.bmml%26bm%3BHomepage%20Administrator%20CatalogManagement.bmml%26bm%3BHomepage%20Administrator%20CatalogManagement.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2248%2C228%2C175%2C247%22%20href%3D%22Homepage%2520Administrator%2520CatalogManagement.bmml%22%20alt%3D%22Homepage%20Administrator%20CatalogManagement%22%20id%3D%227%22/%3E</map>
         <text>Catalog%20Management</text>
       </controlProperties>
     </control>

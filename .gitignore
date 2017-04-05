@@ -1,0 +1,31 @@
+#
+# Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+#
+#    AUTHOR
+#      qingyi.meng@oracle.com
+#
+#    DESCRIPTION
+#	Specifies intentionally untracked files to ignore with git
+#
+#    NOTES
+#	File is maintained in two parts:
+#		(1) Files/File-pattern to ignore
+#		(2) Directories to ignore
+#	Keep the file in alphabetical order
+#
+
+##############################
+# Files/File-pattern to ignore
+##############################
+*.jdb
+*.jpr
+*.class
+*.ear
+*.log
+
+########################################
+# Directory/Directory pattern to ignore
+########################################
+.data/
+deploy/
+ODP/.data/*

@@ -64,8 +64,8 @@
       <controlProperties>
         <backgroundAlpha>0</backgroundAlpha>
         <borderColor>16777215</borderColor>
-        <href>Register%20Select_Role_Supplier%26bm%3BRegister%20Select_Role_Supplier.bmml%26bm%3BRegister%20Select_Role_Supplier.bmml%26bm%3BRegister%20Select_Role_Supplier.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22402%2C296%2C485%2C314%22%20href%3D%22Register%2520Select_Role_Supplier.bmml%22%20alt%3D%22Register%20Select_Role_Supplier%22%20id%3D%2211%22/%3E</map>
+        <href>Register%20Supplier_BasicInfo_Empty%26bm%3BRegister%20Supplier_BasicInfo_Empty.bmml%26bm%3BRegister%20Supplier_BasicInfo_Empty.bmml%26bm%3BRegister%20Supplier_BasicInfo_Empty.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22402%2C296%2C485%2C314%22%20href%3D%22Register%2520Supplier_BasicInfo_Empty.bmml%22%20alt%3D%22Register%20Supplier_BasicInfo_Empty%22%20id%3D%2211%22/%3E</map>
         <shape>rectangle</shape>
         <text/>
       </controlProperties>

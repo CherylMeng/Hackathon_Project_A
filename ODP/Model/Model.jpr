@@ -149,6 +149,10 @@
          <string v="HR_EJB_JPA_Model_adflib"/>
       </list>
    </hash>
+   <hash n="oracle.jdeveloper.model.J2eeSettings">
+      <value n="j2eeWebAppName" v="Model"/>
+      <value n="j2eeWebContextRoot" v="Model"/>
+   </hash>
    <hash n="oracle.jdevimpl.config.JProjectLibraries">
       <list n="exportedReferences">
          <hash>
@@ -269,6 +273,10 @@
          </hash>
          <hash>
             <value n="id" v="Sqlserver2008.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Ojdbc6-12.1.0.1.0.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -490,6 +498,15 @@
                <value n="id" v="Sqlserver2008.jar"/>
                <value n="locked" v="true"/>
             </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/ojdbc6-12.1.0.1.0.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Ojdbc6-12.1.0.1.0.jar"/>
+               <value n="id" v="Ojdbc6-12.1.0.1.0.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
          </list>
       </hash>
       <list n="libraryReferences">
@@ -613,6 +630,10 @@
             <value n="id" v="Sqlserver2008.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="Ojdbc6-12.1.0.1.0.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectPaths">
@@ -627,5 +648,8 @@
             </hash>
          </hash>
       </hash>
+   </hash>
+   <hash n="ResourceBundleOptions">
+      <list n="RegisteredResourceBundles"/>
    </hash>
 </jpr:project>
