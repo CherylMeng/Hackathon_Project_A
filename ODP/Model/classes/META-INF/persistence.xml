@@ -6,10 +6,10 @@
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/fate"/>
-            <property name="javax.persistence.jdbc.user" value="xiadai"/>
-            <property name="javax.persistence.jdbc.password" value="welcome1"/>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@slc09xzf.us.oracle.com:1521:epps"/>
+            <property name="javax.persistence.jdbc.user" value="c##procurement"/>
+            <property name="javax.persistence.jdbc.password" value="2C41F5CBD46CBD787ECD7C2CF38FCBD2"/>
         </properties>
 	</persistence-unit>
 </persistence>

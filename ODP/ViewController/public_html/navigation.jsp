@@ -27,8 +27,8 @@
 						<li class="light-blue user-profile">
 							<a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle">						 
 								<span id="user_info">
-									<small>你好啊,</small>
-									管理员大人
+									<small>Hi,</small>
+									Admins
 								</span>
 
 								<i class="icon-caret-down"></i>
@@ -48,7 +48,7 @@
 				</div><!--/.container-fluid-->
 			</div><!--/.navbar-inner-->
 		</div>
-        <!-- 这里是头部结束位置-->
+        <!-- end of Head-->
 
 		<div class="container-fluid" id="main-container">
 			<a id="menu-toggler" href="#">
