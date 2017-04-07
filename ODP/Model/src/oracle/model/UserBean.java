@@ -37,8 +37,8 @@ public class UserBean {
         rs = pstmt.executeQuery();
         while(rs.next()){
             User user = new User();
-            user.setUserName(rs.getString("user_name"));
-            user.setUserId(rs.getInt("user_id"));
+            //user.setUserName(rs.getString("user_name"));
+            //.setUserId(rs.getInt("user_id"));
             list.add(user);
 		} 
 	return list;
