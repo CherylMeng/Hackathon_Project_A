@@ -8,8 +8,6 @@ public class SKU {
     
     private long skuType;
     
-    private String skuTypeName;
-    
     private String skuName;
     
     private String skuValue;

@@ -154,6 +154,68 @@ public class DBConnection {
         }
         return map;
     }
+    
+    public static HashMap<String, Long> getManagerMap() {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        Connection conn = getConnection();
+        String getManagerSql = "SELECT ''||MANAGER_FIRST_NAMES.USER_INFO_VALUE||' '||MANAGER_LAST_NAMES.USER_INFO_VALUE||'' MANAGER_NAME, MANAGER_FIRST_NAMES.USER_ID MANAGER_ID FROM (SELECT USER_INFO_VALUE, USER_ID FROM USER_INFO WHERE USER_INFO_TYPE = 8) MANAGER_FIRST_NAMES INNER JOIN (SELECT USER_ID, USER_INFO_VALUE FROM USER_INFO WHERE USER_INFO_TYPE = 9) MANAGER_LAST_NAMES ON MANAGER_FIRST_NAMES.USER_ID = MANAGER_LAST_NAMES.USER_ID";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getManagerSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    String roleName = rs.getString("MANAGER_NAME");
+                    long roleID = rs.getLong("MANAGER_ID");
+                    map.put(roleName, roleID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
+    
+    public static HashMap<String, Long> getSiteMap() {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        Connection conn = getConnection();
+        String getManagerSql = "SELECT * FROM SITE";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getManagerSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    String roleName = rs.getString("SITE_NAME");
+                    long roleID = rs.getLong("SITE_ID");
+                    map.put(roleName, roleID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
 
     public static boolean updateUserStatus(long userID, String status) {
         Connection conn = getConnection();
@@ -230,7 +292,7 @@ public class DBConnection {
         PreparedStatement pstmt = null;
         User user = new User();
         long roleID = -1;
-        String getUsedSql =
+        String getUserSql =
             "SELECT USER_ID, ROLE_NAME, NAME, MANAGER_ID, STATUS_NAME, USER_ROLE.ROLE_ID ROLE_ID FROM (SELECT USER_ID, ROLE_ID,NAME, MANAGER_ID, STATUS FROM USERS WHERE USER_ID = ?) FILTERED_USERS LEFT JOIN USER_ROLE ON FILTERED_USERS.ROLE_ID = USER_ROLE.ROLE_ID LEFT JOIN USER_STATUS ON FILTERED_USERS.STATUS = USER_STATUS.STATUS_ID";
         String getUserInfoSql =
             "SELECT TYPE_ID, TYPE_NAME, DISPLAY_NAME, USER_INFO_VALUE FROM (SELECT TYPE_ID, TYPE_NAME, DISPLAY_NAME, DISPLAY_ORDER FROM USER_INFO_TYPE WHERE ROLE_ID = ? _MANDATORY_) FILTERED_IINFO_TYPE LEFT JOIN USER_INFO ON USER_INFO.USER_INFO_TYPE = FILTERED_IINFO_TYPE.TYPE_ID _WHERE_ ORDER BY DISPLAY_ORDER";
@@ -247,7 +309,7 @@ public class DBConnection {
             getUserInfoSql = getUserInfoSql.replaceAll("_WHERE_", "WHERE USER_ID = ?");
         }
         try {
-            pstmt = conn.prepareStatement(getUsedSql);
+            pstmt = conn.prepareStatement(getUserSql);
             pstmt.setLong(1, userID);
             ResultSet rs = pstmt.executeQuery();
             if (rs != null) {
@@ -1624,6 +1686,9 @@ public class DBConnection {
         //System.out.println(getCataLogByParent(0));
         //updateCatalogName(46, "Bookbinding Supplie");
         //System.out.println(getSkuByOfficeDepot(1));
-        getOrders(1, DBConstant.ORDER_ROLE_REQUESTOR);
+        //getOrders(1, DBConstant.ORDER_ROLE_REQUESTOR);
+        //System.out.println(getManagerMap());
+        System.out.println(getSiteMap());
+        
     }
 }
