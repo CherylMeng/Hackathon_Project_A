@@ -5,3 +5,28 @@
     Description:
         This is where any of your application specific styles should be included
 */
+html{
+    font-size: 16px;
+}
+
+.home-page-head{
+    position: relative;
+}
+.notification-box{
+    border: solid black;
+    position: absolute;
+    margin-top: -48px;
+    right: 0;
+    padding: 3px 20px;
+}
+
+ul{
+    padding: 0;
+}
+li{
+    list-style:none;
+}
+
+.home-page-title{
+    font-weight: bolder;
+}
