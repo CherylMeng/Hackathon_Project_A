@@ -9,6 +9,8 @@ public class OfficeDepot {
     
     private long supplierID;
     
+    private String name;
+    
     private Price price;
     
     private ArrayList<SKU> skuList;
@@ -51,5 +53,13 @@ public class OfficeDepot {
 
     public ArrayList<SKU> getSkuList() {
         return skuList;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

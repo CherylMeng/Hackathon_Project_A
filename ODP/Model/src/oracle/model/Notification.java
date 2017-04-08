@@ -13,6 +13,8 @@ public class Notification {
     private long orderID;
     
     private String username;
+    
+    private String createdTime;
 
     public void setNotificationID(long notificationID) {
         this.notificationID = notificationID;
@@ -60,5 +62,13 @@ public class Notification {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
     }
 }

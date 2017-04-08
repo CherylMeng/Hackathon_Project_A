@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import oracle.model.ActionType;
 import oracle.model.Catalog;
 import oracle.model.Notification;
 import oracle.model.OfficeDepot;
@@ -125,10 +126,14 @@ public class DBConnection {
         return map;
     }
 
-    public static HashMap<String, Long> getRegisterUserRoles() {
+    public static HashMap<String, Long> getRoleMap(boolean forRegister) {
         HashMap<String, Long> map = new HashMap<String, Long>();
         Connection conn = getConnection();
-        String sql = "SELECT ROLE_ID, ROLE_NAME FROM USER_ROLE WHERE ROLE_ID = 2 OR ROLE_ID = 4";
+        String sql = "SELECT ROLE_ID, ROLE_NAME FROM USER_ROLE";
+        String registerFilter = " WHERE ROLE_ID = 2 OR ROLE_ID = 4";
+        if (forRegister) {
+            sql = sql + registerFilter;
+        }
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
@@ -197,9 +202,71 @@ public class DBConnection {
             ResultSet rs = stmt.executeQuery(getManagerSql);
             if (rs != null) {
                 while (rs.next()) {
-                    String roleName = rs.getString("SITE_NAME");
-                    long roleID = rs.getLong("SITE_ID");
-                    map.put(roleName, roleID);
+                    String siteName = rs.getString("SITE_NAME");
+                    long siteID = rs.getLong("SITE_ID");
+                    map.put(siteName, siteID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
+    
+    public static HashMap<String, Long> getOrderTypeMap() {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        Connection conn = getConnection();
+        String getOrderTypeSql = "SELECT * FROM ORDER_TYPE";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getOrderTypeSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    String typeName = rs.getString("TYPE_NAME");
+                    long typeID = rs.getLong("TYPE_ID");
+                    map.put(typeName, typeID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
+    
+    public static HashMap<String, Long> getCurrencyMap() {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        Connection conn = getConnection();
+        String getCurrencySql = "SELECT CURRENCY_ID, CURRENCY_NAME FROM CURRENCY_TYPE";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getCurrencySql);
+            if (rs != null) {
+                while (rs.next()) {
+                    String currencyName = rs.getString("CURRENCY_NAME");
+                    long currencyID = rs.getLong("CURRENCY_ID");
+                    map.put(currencyName, currencyID);
                 }
             }
         } catch (SQLException e) {
@@ -295,7 +362,7 @@ public class DBConnection {
         String getUserSql =
             "SELECT USER_ID, ROLE_NAME, NAME, MANAGER_ID, STATUS_NAME, USER_ROLE.ROLE_ID ROLE_ID FROM (SELECT USER_ID, ROLE_ID,NAME, MANAGER_ID, STATUS FROM USERS WHERE USER_ID = ?) FILTERED_USERS LEFT JOIN USER_ROLE ON FILTERED_USERS.ROLE_ID = USER_ROLE.ROLE_ID LEFT JOIN USER_STATUS ON FILTERED_USERS.STATUS = USER_STATUS.STATUS_ID";
         String getUserInfoSql =
-            "SELECT TYPE_ID, TYPE_NAME, DISPLAY_NAME, USER_INFO_VALUE FROM (SELECT TYPE_ID, TYPE_NAME, DISPLAY_NAME, DISPLAY_ORDER FROM USER_INFO_TYPE WHERE ROLE_ID = ? _MANDATORY_) FILTERED_IINFO_TYPE LEFT JOIN USER_INFO ON USER_INFO.USER_INFO_TYPE = FILTERED_IINFO_TYPE.TYPE_ID _WHERE_ ORDER BY DISPLAY_ORDER";
+            "SELECT TYPE_ID, TYPE_NAME, DISPLAY_NAME, USER_INFO_VALUE, IS_TEXT, MAP_NAME FROM (SELECT TYPE_ID, TYPE_NAME, DISPLAY_NAME, DISPLAY_ORDER, IS_TEXT, MAP_NAME FROM USER_INFO_TYPE WHERE ROLE_ID = ? _MANDATORY_) FILTERED_IINFO_TYPE LEFT JOIN USER_INFO ON USER_INFO.USER_INFO_TYPE = FILTERED_IINFO_TYPE.TYPE_ID _WHERE_ ORDER BY DISPLAY_ORDER";
 
         if (isMandatory) {
             getUserInfoSql = getUserInfoSql.replaceAll("_MANDATORY_", "AND IS_MANDATORY = ?");
@@ -345,6 +412,8 @@ public class DBConnection {
                     item.setTypeName(rs.getString("TYPE_NAME"));
                     item.setDisplayName(rs.getString("DISPLAY_NAME"));
                     item.setValue(rs.getString("USER_INFO_VALUE"));
+                    item.setIsText(rs.getInt("IS_TEXT") == 1);
+                    item.setMap(rs.getString("MAP_NAME"));
                     user.addUserInfoItem(item);
                 }
             }
@@ -361,6 +430,68 @@ public class DBConnection {
             }
         }
         return null;
+    }
+    
+    public static ArrayList<User> getUserByManager(long managerID){
+        ArrayList<User> users = new ArrayList<User>();
+        String getUserByManagerSql = "SELECT * FROM USERS WHERE MANAGER_ID = ?";
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(getUserByManagerSql);
+            pstmt.setLong(1, managerID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    long userID = rs.getLong("USER_ID");
+                    User user = getUser(userID, true, false);
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return users;
+    }
+    
+    public static ArrayList<User> getUserByRole(String role){
+        ArrayList<User> users = new ArrayList<User>();
+        String getUserByManagerSql = "SELECT * FROM USERS WHERE ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?)";
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(getUserByManagerSql);
+            pstmt.setString(1, role);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    long userID = rs.getLong("USER_ID");
+                    User user = getUser(userID, true, false);
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return users;
     }
 
     public static long saveUserInfoItem(UserInfoItem item, long userID) {
@@ -414,14 +545,26 @@ public class DBConnection {
             saveUserInfoItem(item, user.getUserID());
         }
         Connection conn = getConnection();
-        String updateUserSql = "UPDATE USER SET NAME = ?, PASSWORD = ?, MANAGER_ID = ? WHERE USER_ID = ?";
+        String updateUserSql = "UPDATE USER SET NAME = ?, PASSWORD = ? _MANAGER_ WHERE USER_ID = ?";
         PreparedStatement pstmt = null;
+        
+        if (DBConstant.USER_ROLE_REQUESTOR.equals(user.getRole()) || DBConstant.USER_ROLE_MANAGER.equals(user.getRole())){
+            updateUserSql = updateUserSql.replaceAll("_MANAGER_", ", MANAGER_ID = ?");
+        } else {
+            updateUserSql = updateUserSql.replaceAll("_MANAGER_", "");
+        }
+        
         try {
             pstmt = conn.prepareStatement(updateUserSql);
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
-            pstmt.setLong(3, user.getManagerID());
-            pstmt.setLong(4, user.getUserID());
+            if(DBConstant.USER_ROLE_REQUESTOR.equals(user.getRole()) || DBConstant.USER_ROLE_MANAGER.equals(user.getRole())){
+                pstmt.setLong(3, user.getManagerID());
+                pstmt.setLong(4, user.getUserID());
+            }else{
+                pstmt.setLong(3, user.getUserID());
+            }
+            
             int linesUpdated = pstmt.executeUpdate();
 
             return linesUpdated > 0;
@@ -438,6 +581,31 @@ public class DBConnection {
         }
         return false;
     }
+    
+    public static Catalog getCataLog(long catalogID) {
+        Catalog catalog = null;
+        Connection conn = getConnection();
+        String sql =
+            "SELECT CATALOG_ID, PARENT_CATALOG, CATALOG_DEPTH, CATALOG_NAME FROM CATALOG WHERE CATALOG_ID = ? AND IS_DELETED = 0";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, catalogID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                catalog = new Catalog();
+                while (rs.next()) {
+                    catalog.setCatalogID(rs.getLong("CATALOG_ID"));
+                    catalog.setParentCatalog(rs.getLong("PARENT_CATALOG"));
+                    catalog.setCatalogDepth(rs.getInt("CATALOG_DEPTH"));
+                    catalog.setCatalogName(rs.getString("CATALOG_NAME"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return catalog;
+    }
 
     public static ArrayList<Catalog> getCataLogByParent(long parent) {
         ArrayList<Catalog> catalogs = new ArrayList<Catalog>();
@@ -450,8 +618,8 @@ public class DBConnection {
             pstmt.setLong(1, parent);
             ResultSet rs = pstmt.executeQuery();
             if (rs != null) {
-                Catalog catalog = new Catalog();
                 while (rs.next()) {
+                    Catalog catalog = new Catalog();
                     catalog.setCatalogID(rs.getLong("CATALOG_ID"));
                     catalog.setParentCatalog(rs.getLong("PARENT_CATALOG"));
                     catalog.setCatalogDepth(rs.getInt("CATALOG_DEPTH"));
@@ -536,7 +704,7 @@ public class DBConnection {
         return false;
     }
 
-    public static boolean deleteCatalogName(long catalogID) {
+    public static boolean deleteCatalog(long catalogID) {
         Connection conn = getConnection();
         String checkCatalogSql = "SELECT COUNT(*) TOTAL_COUNT FROM OFFICE_DEPOT WHERE CATALOG_ID = ?";
         String deleteCatalogSql = "UPDATE CATALOG SET IS_DELETED = 1 WHERE CATALOG_ID = ?";
@@ -712,6 +880,38 @@ public class DBConnection {
         }
         return false;
     }
+    
+    public static ArrayList<SKU> getSKUType() {
+        ArrayList<SKU> skuList = new ArrayList<SKU>();
+        Connection conn = getConnection();
+        String getOrderTypeSql = "SELECT * FROM SKU_TYPE";
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getOrderTypeSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    SKU sku = new SKU();
+                    sku.setSkuType(rs.getLong("TYPE_ID"));
+                    sku.setSkuName(rs.getString("SKU_NAME"));
+                    sku.setIsMandatory(rs.getInt("IS_MANDATORY") == 1);
+                    skuList.add(sku);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return skuList;
+    }
 
     public static ArrayList<SKU> getSkuByOfficeDepot(long officeDepotID) {
         Connection conn = getConnection();
@@ -800,7 +1000,7 @@ public class DBConnection {
         try {
             pstmt = conn.prepareStatement(updateSkuSql);
             pstmt.setString(1, sku.getSkuValue());
-            pstmt.setLong(3, sku.getSkuID());
+            pstmt.setLong(2, sku.getSkuID());
             int linesUpdated = pstmt.executeUpdate();
 
             return linesUpdated > 0;
@@ -1050,13 +1250,13 @@ public class DBConnection {
         return result;
     }
 
-    public static boolean deleteOfficeDepot(OfficeDepot officeDepot) {
+    public static boolean deleteOfficeDepot(long officeDepotID) {
         Connection conn = getConnection();
         String updateOfficeDepotSql = "UPDATE OFFICE_DEPOT SET IS_DELETED = 1 WHERE ITEM_ID = ?";
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(updateOfficeDepotSql);
-            pstmt.setLong(1, officeDepot.getOfficeDepotID());
+            pstmt.setLong(1, officeDepotID);
             int linesUpdated = pstmt.executeUpdate();
 
             return linesUpdated > 0;
@@ -1171,9 +1371,10 @@ public class DBConnection {
     public static Order getOrderById(long orderID) {
         Connection conn = getConnection();
         String getOrderSql = "SELECT FILTERED_ORDER.ORDER_TYPE ORDER_TYPE, ORDER_TYPE.TYPE_NAME TYPE_NAME, FILTERED_ORDER.ORDER_STATUS ORDER_STATUS, ORDER_STATUS.STATUS_NAME STATUS_NAME, FILTERED_ORDER.REQUESTOR REQUESTOR, USER1.NAME REQUESTOR_NAME, " +
-            "FILTERED_ORDER.RECEIVER RECEIVER, USER2.NAME RECEIVER_NAME, FILTERED_ORDER.CREATED_TIME CREATED_TIME, FILTERED_ORDER.SUBMITTED_TIME SUBMITTED_TIME, FILTERED_ORDER.APPROVED_TIME APPROVED_TIME, FILTERED_ORDER.PROCESSING_TIME PROCESSING_TIME, " +
-            "FILTERED_ORDER.COMPLETED_TIME COMPLETED_TIME, FILTERED_ORDER.REFUSED_TIME REFUSED_TIME, FILTERED_ORDER.DELETED_TIME DELETED_TIME, CANCELED_TIME, PRICE_ID FROM (SELECT * FROM ORDERS WHERE ORDER_ID = ?) FILTERED_ORDER LEFT JOIN ORDER_TYPE " +
-            "ON FILTERED_ORDER.ORDER_TYPE = ORDER_TYPE.TYPE_ID LEFT JOIN ORDER_STATUS ON FILTERED_ORDER.ORDER_STATUS = ORDER_STATUS.STATUS_ID LEFT JOIN USERS USER1 ON FILTERED_ORDER.REQUESTOR = USER1.USER_ID LEFT JOIN USERS USER2 ON FILTERED_ORDER.RECEIVER = USER2.USER_ID";
+            "FILTERED_ORDER.RECEIVER RECEIVER, USER2.NAME RECEIVER_NAME, FILTERED_ORDER.JUSTIFICATION JUSTIFICATION, FILTERED_ORDER.CREATED_TIME CREATED_TIME, FILTERED_ORDER.SUBMITTED_TIME SUBMITTED_TIME, FILTERED_ORDER.APPROVED_TIME APPROVED_TIME, " +
+            "FILTERED_ORDER.PROCESSING_TIME PROCESSING_TIME, FILTERED_ORDER.COMPLETED_TIME COMPLETED_TIME, FILTERED_ORDER.REFUSED_TIME REFUSED_TIME, FILTERED_ORDER.DELETED_TIME DELETED_TIME, CANCELED_TIME, PRICE_ID FROM (SELECT * FROM ORDERS WHERE ORDER_ID = ?) " +
+            "FILTERED_ORDER LEFT JOIN ORDER_TYPE ON FILTERED_ORDER.ORDER_TYPE = ORDER_TYPE.TYPE_ID LEFT JOIN ORDER_STATUS ON FILTERED_ORDER.ORDER_STATUS = ORDER_STATUS.STATUS_ID LEFT JOIN USERS USER1 ON FILTERED_ORDER.REQUESTOR = USER1.USER_ID LEFT JOIN USERS USER2 " +
+            "ON FILTERED_ORDER.RECEIVER = USER2.USER_ID";
         PreparedStatement pstmt = null;
         Order order = null;
         try {
@@ -1192,6 +1393,7 @@ public class DBConnection {
                     order.setRequestorName(rs.getString("REQUESTOR_NAME"));
                     order.setReceiver(rs.getLong("RECEIVER"));
                     order.setReceiverName(rs.getString("RECEIVER_NAME"));
+                    order.setJustification(rs.getString("JUSTIFICATION"));
                     order.setCreatedTime(rs.getString("CREATED_TIME"));
                     order.setSubmittedTime(rs.getString("SUBMITTED_TIME"));
                     order.setApprovedTime(rs.getString("APPROVED_TIME"));
@@ -1261,7 +1463,7 @@ public class DBConnection {
         
         Connection conn = getConnection();
         String getOrderItemIdSql = "SELECT SEQ_PROCUREMENT_ORDER_ID.NEXTVAL ORDER_ID FROM DUAL";
-        String addOrderItemSql = "INSERT INTO ORDER (ORDER_ID, ORDER_TYPE, ORDER_STATUS, REQUESTOR, RECEIVER, PRICE_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        String addOrderItemSql = "INSERT INTO ORDER (ORDER_ID, ORDER_TYPE, ORDER_STATUS, REQUESTOR, RECEIVER, JUSTIFICATION, PRICE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         Statement stmt = null;
         long orderID = -1;
@@ -1280,7 +1482,8 @@ public class DBConnection {
                 pstmt.setLong(3, order.getOrderStatus());
                 pstmt.setLong(4, order.getRequestor());
                 pstmt.setLong(5, order.getReceiver());
-                pstmt.setLong(6, priceID);
+                pstmt.setString(6, order.getJustification());
+                pstmt.setLong(7, priceID);
                 pstmt.executeUpdate();
             }
             for (OrderItem item : order.getOrderItems()) {
@@ -1351,7 +1554,7 @@ public class DBConnection {
             if (DBConstant.ORDER_STATUS_SUBMITTED.equals(order.getOrderStatusName())){
                 pstmt.setString(1, DBConstant.USER_ROLE_MANAGER);
             } else if (DBConstant.ORDER_STATUS_APPROVED.equals(order.getOrderStatusName())) {
-                pstmt.setString(1, DBConstant.USER_ROLE_SIPPLIER);
+                pstmt.setString(1, DBConstant.USER_ROLE_SUPPLIER);
             }
             pstmt.setString(2, DBConstant.USER_ROLE_REQUESTOR);
             pstmt.setString(3, DBConstant.MANAGEMENT_TYPE_ORDER);
@@ -1402,6 +1605,37 @@ public class DBConnection {
         return toDoListID;
     }
     
+    public static long getToDoListType(String assigneeRole, String ownerRole, String management){
+        String selectToDoListTypeIdSql = "SELECT TYPE_ID FROM TO_DO_LIST_TYPE WHERE ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND OWNER_ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND MANAGEMENT_ID = (SELECT TYPE_ID FROM MANAGEMENT_TYPE WHERE TYPE_NAME = ?)";
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        long toDoListTypeID = -1;
+        try {
+            pstmt = conn.prepareStatement(selectToDoListTypeIdSql);
+            pstmt.setString(1, assigneeRole);
+            pstmt.setString(2, ownerRole);
+            pstmt.setString(3, management);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    toDoListTypeID = rs.getLong("TYPE_ID");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return toDoListTypeID;
+    }
+    
     public static long createToDoListForAccount(User user){
         String selectToDoListTypeIdSql = "SELECT TYPE_ID FROM TO_DO_LIST_TYPE WHERE ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND OWNER_ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND MANAGEMENT_ID = (SELECT TYPE_ID FROM MANAGEMENT_TYPE WHERE TYPE_NAME = ?)";
         String getToDoListIdSql = "SELECT SEQ_PROCUREMENT_TO_DO_LIST_ITEM_ID.NEXTVAL TO_DO_LIST_ITEM_ID FROM DUAL";
@@ -1415,7 +1649,7 @@ public class DBConnection {
             pstmt = conn.prepareStatement(selectToDoListTypeIdSql);
             if (DBConstant.USER_ROLE_REQUESTOR.equals(user.getRole()) && DBConstant.USER_STATUS_CREATED.equals(user.getStatus())){
                 pstmt.setString(1, DBConstant.USER_ROLE_MANAGER);
-            } else if (DBConstant.USER_ROLE_SIPPLIER.equals(user.getRole()) && DBConstant.USER_STATUS_CREATED.equals(user.getStatus())) {
+            } else if (DBConstant.USER_ROLE_SUPPLIER.equals(user.getRole()) && DBConstant.USER_STATUS_CREATED.equals(user.getStatus())) {
                 pstmt.setString(1, DBConstant.USER_ROLE_ADMIN);
             }
             pstmt.setString(2, user.getRole());
@@ -1470,7 +1704,7 @@ public class DBConnection {
         String getToDoListSql = "SELECT * FROM (SELECT * FROM TO_DO_LIST_ITEM WHERE ASSIGNEE_ID = ? AND IS_FINISHED = 0 _MANAGEMENT_ ) FILTERED_TO_DO_LIST_ITEM LEFT JOIN USERS ON FILTERED_TO_DO_LIST_ITEM.OWNER_ID = USERS.USER_ID";
         if (DBConstant.MANAGEMENT_TYPE_ACCOUNT.equals(managementType)) {
             getToDoListSql = getToDoListSql.replaceAll("_MANAGEMENT_", "AND (TYPE_ID = 1 OR TYPE_ID = 2)");
-        } else if (DBConstant.MANAGEMENT_TYPE_ACCOUNT.equals(managementType)) {
+        } else if (DBConstant.MANAGEMENT_TYPE_ORDER.equals(managementType)) {
             getToDoListSql = getToDoListSql.replaceAll("_MANAGEMENT_", "AND (TYPE_ID = 3 OR TYPE_ID = 4)");
         } else {
             getToDoListSql = getToDoListSql.replaceAll("_MANAGEMENT_", "");
@@ -1490,7 +1724,7 @@ public class DBConnection {
                     item.setOwnerName(rs.getString("NAME"));
                     item.setTypeID(rs.getLong("TYPE_ID"));
                     item.setToDoListItemID(rs.getLong("ITEM_ID"));
-                    item.setToDoListItemID(rs.getLong("ORDER_ID"));
+                    item.setOrderID(rs.getLong("ORDER_ID"));
                     
                     todoList.add(item);
                 }
@@ -1534,6 +1768,64 @@ public class DBConnection {
         return false;
     }
     
+    public static int getToDoListNum(long assigneeID) {
+        String getToDoListSql = "SELECT COUNT(*) NUM FROM TO_DO_LIST_ITEM WHERE ASSIGNEE_ID = ? AND IS_FINISHED = 0";
+        int toDoListNum = -1;
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(getToDoListSql);
+            pstmt.setLong(1, assigneeID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    toDoListNum = rs.getInt("NUM");
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return toDoListNum;
+    }
+    
+    public static int getNotificationNum(long receiverID) {
+        String getToDoListSql = "SELECT COUNT(*) NUM FROM NOTIFICATION WHERE RECEIVER_ID = ? AND IS_READ = 0";
+        int notificationtNum = -1;
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(getToDoListSql);
+            pstmt.setLong(1, receiverID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    notificationtNum = rs.getInt("NUM");
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return notificationtNum;
+    }
+    
     public static ArrayList<Notification> getNotification(long receiver, boolean checkNew){
         String getNotificationSql = "SELECT * FROM NOTIFICATION WHERE RECEIVER_ID = ? AND IS_READ = ?";
         Connection conn = getConnection();
@@ -1555,6 +1847,7 @@ public class DBConnection {
                     item.setActionMappingID(rs.getLong("ACTION_MAPPING_ID"));
                     item.setReceiverID(rs.getLong("RECEIVER_ID"));
                     item.setMessage(rs.getString("MESSAGE"));
+                    item.setCreatedTime(rs.getString("CREATED_TIME"));
                     notificationList.add(item);
                 }
             }
@@ -1573,7 +1866,7 @@ public class DBConnection {
         return notificationList;
     }
     
-    public static long createNotificationForOrder(Notification notification) {
+    public static long createNotification(Notification notification) {
         String getNotificationMessageSql = "SELECT NOTIFICATION_MASSAGE_PATERN FROM ACTION_MAPPING WHERE MAPPING_ID = ?";
         String getNotificationIdSql = "SELECT SEQ_PROCUREMENT_NOTIFICATIONM_ID.NEXTVAL NOTIFICATION_ID FROM DUAL";
         String addNotificationSql = "INSERT INTO NOTIFICATION(NOTIFICATION_ID, ACTION_MAPPING_ID, RECEIVER_ID, MESSAGE, IS_READ) VALUES (?, ?, ?, ?, 0)";
@@ -1657,6 +1950,135 @@ public class DBConnection {
         }
         return false;
     }
+    
+    public static HashMap<Long, String> getActionTypeMap(){
+        HashMap<Long, String> map = new HashMap<Long, String>();
+        Connection conn = getConnection();
+        String getOrderTypeSql = "SELECT * FROM ACTION_TYPE";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getOrderTypeSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    long typeID = rs.getLong("ACTION_ID");
+                    String typeName = rs.getString("ACTION_NAME");
+                    map.put(typeID, typeName);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
+    
+    public static ArrayList<ActionType> getActions(long toDoListTypeID, long initialStateID){
+        String getActionsSql = "SELECT FILTERED_ACTION.ACTION_ID ACTION_ID, FILTERED_ACTION.NOTIFICATION_MASSAGE_PATERN NOTIFICATION_MASSAGE_PATERN, FILTERED_ACTION.REQUEST_URL REQUEST_URL, ACTION_TYPE.ACTION_NAME ACTION_NAME FROM (SELECT * FROM ACTION_MAPPING WHERE TO_DO_LIST_TYPE_ID = ? AND INITIAL_STATE_ID = ?) FILTERED_ACTION LEFT JOIN ACTION_TYPE ON FILTERED_ACTION.ACTION_ID = ACTION_TYPE.ACTION_ID";
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        ArrayList<ActionType> actionList = new ArrayList<ActionType>();
+        try {
+            pstmt = conn.prepareStatement(getActionsSql);
+            pstmt.setLong(1, toDoListTypeID);
+            pstmt.setLong(2, initialStateID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    ActionType item = new ActionType();
+                    item.setActionID(rs.getLong("ACTION_ID"));
+                    item.setMessage(rs.getString("NOTIFICATION_MASSAGE_PATERN"));
+                    item.setRequestUrl(rs.getString("REQUEST_URL"));
+                    item.setActionName(rs.getString("ACTION_NAME"));
+                    
+                    actionList.add(item);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return actionList;
+    }
+    
+    public static HashMap<String, Long> getInitialStatusMap(){
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        Connection conn = getConnection();
+        String getInitialStateSql = "SELECT * FROM INITIAL_STATE_TYPE";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getInitialStateSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    long stateID = rs.getLong("TYPE_ID");
+                    String stateName = rs.getString("TYPE_NAME");
+                    map.put(stateName, stateID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
+    
+    public static HashMap<String, String> getEndingStatusMap(){
+        HashMap<String, String> map = new HashMap<String, String>();
+        Connection conn = getConnection();
+        String getInitialStateSql = "SELECT ACTION_NAME, END_STATUS FROM ACTION_TYPE";
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(getInitialStateSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    String actionName = rs.getString("ACTION_NAME");
+                    String endState = rs.getString("END_STATUS");
+                    map.put(actionName, endState);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
 
 
     /**
@@ -1681,14 +2103,18 @@ public class DBConnection {
         //System.out.println(getRegisterUserRoleMap());
         //System.out.println(updateUserStatus(1, DBConstant.USER_STATUS_ENABLED));
         //System.out.println(getNewUserID(1));
-        //System.out.println(getUser(1, true, true));
+        //System.out.println(getUser(4, true, true).getUserInfo());
         //System.out.println(deleteCatalogName(46));
         //System.out.println(getCataLogByParent(0));
         //updateCatalogName(46, "Bookbinding Supplie");
         //System.out.println(getSkuByOfficeDepot(1));
         //getOrders(1, DBConstant.ORDER_ROLE_REQUESTOR);
         //System.out.println(getManagerMap());
-        System.out.println(getSiteMap());
-        
+        //System.out.println(getSiteMap());
+        //System.out.println(getCurrencyMap());
+        //System.out.println(getOrderTypeMap());
+        //System.out.println(getNotificationNum(1));
+        //System.out.println(getToDoListNum(1));
+        //System.out.println(getUserByRole(DBConstant.USER_ROLE_SUPPLIER));
     }
 }

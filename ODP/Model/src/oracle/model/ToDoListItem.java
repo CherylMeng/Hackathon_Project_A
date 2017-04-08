@@ -14,7 +14,10 @@ public class ToDoListItem {
     private long assigneeID;
     
     private long orderID;
-
+    
+    private AccountInfo accountInfo;
+    
+    private OrderInfo orderInfo;
 
     public void setToDoListItemID(long toDoListItemID) {
         this.toDoListItemID = toDoListItemID;
@@ -62,5 +65,21 @@ public class ToDoListItem {
 
     public long getOrderID() {
         return orderID;
+    }
+
+    public void setAccountInfo(AccountInfo accountInfo) {
+        this.accountInfo = accountInfo;
+    }
+
+    public AccountInfo getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setOrderInfo(OrderInfo orderInfo) {
+        this.orderInfo = orderInfo;
+    }
+
+    public OrderInfo getOrderInfo() {
+        return orderInfo;
     }
 }
