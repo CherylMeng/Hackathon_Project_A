@@ -1,0 +1,48 @@
+<!--
+ Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-hybrid-padding">
+    <header class="home-page-head">
+        <h3 class="home-page-title">Account Management</h3>
+        <div class="notification-box">
+            <ul>
+              <li>
+                  <a>To Do List(<span data-bind="text: toDoListNum"></span>)</a>
+              </li>
+              <li>
+                  <a>Notification(<span data-bind="text: notificationNum"></span>)</a>
+              </li>
+            </ul>
+        </div>
+    </header>
+    <br><br>
+    <div>
+        <table id="table" summary="Department List" aria-label="Departments Table"
+               data-bind="ojComponent: {component: 'ojTable', 
+                                data: datasource, 
+                                columns: [{headerText: 'Account', 
+                                           field: 'account'},
+                                          {headerText: 'First Name', 
+                                           sortable: 'enabled', 
+                                           sortProperty: 'firstName'},
+                                          {headerText: 'Last Name', 
+                                           field: 'lastName'},
+                                          {headerText: 'Status', 
+                                           field: 'status'},
+                                          {headerText: 'Actions', 
+                                           sortable: 'enabled', 
+                                           template: 'actions_template', 
+                                           sortProperty: 'actions'}],
+                                           rootAttributes: {'style':'width: 100%;'}}">
+        </table>
+        <script type="text/html" id="actions_template">
+            <td>
+                <a data-bind="if: $data.indexOf('Disable')>-1">Disable</a>
+                <a data-bind="if: $data.indexOf('Enable')>-1">Enable</a>
+                <a data-bind="if: $data.indexOf('Approve')>-1">Approve</a>
+                <a data-bind="if: $data.indexOf('Refuse')>-1">Refuse</a>
+            </td>
+        </script>
+    </div>
+</div>
