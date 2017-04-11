@@ -25,6 +25,7 @@
                                            field: 'account'},
                                           {headerText: 'First Name', 
                                            sortable: 'enabled', 
+                                           field: 'firstName',
                                            sortProperty: 'firstName'},
                                           {headerText: 'Last Name', 
                                            field: 'lastName'},
@@ -38,10 +39,10 @@
         </table>
         <script type="text/html" id="actions_template">
             <td>
-                <a data-bind="if: $data.indexOf('Disable')>-1">Disable</a>
-                <a data-bind="if: $data.indexOf('Enable')>-1">Enable</a>
-                <a data-bind="if: $data.indexOf('Approve')>-1">Approve</a>
-                <a data-bind="if: $data.indexOf('Refuse')>-1">Refuse</a>
+                <a data-bind="if: $data['actions'].indexOf('Disable')>-1, click: $parent.disableHandler">Disable</a>
+                <a data-bind="if: $data['actions'].indexOf('Enable')>-1, click: $parent.enableHandler">Enable</a>
+                <a data-bind="if: $data['actions'].indexOf('Approve')>-1, click: $parent.approveHandler">Approve</a>
+                <a data-bind="if: $data['actions'].indexOf('Refuse')>-1, click: $parent.refuseHandler">Refuse</a>
             </td>
         </script>
     </div>
