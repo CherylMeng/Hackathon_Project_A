@@ -1458,6 +1458,11 @@ public class DBConnection {
     
     public static long addOrder(Order order){
         HashMap<Long, Double> currecyMap = getCurrencyExchangeMap();
+        for (OrderItem item : order.getOrderItems()){
+            OfficeDepot officeDepot = getOfficeDepot(item.getOfficeDepotID());
+            item.setPrice(officeDepot.getPrice());
+            item.setOrderID(order.getOrderID());
+        }
         order.calculateTotalPrice(currecyMap);
         long priceID = addPrice(order.getTotal());
         
