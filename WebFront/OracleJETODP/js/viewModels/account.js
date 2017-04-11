@@ -36,7 +36,20 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraytabledatasource', 'ojs/o
           {account: 110, firstName: 'Marketing13', lastName: 200, status: 300, actions: ['Approve', 'Refuse']},
           {account: 120, firstName: 'Purchasing14', lastName: 200, status: 300, actions: ['Approve', 'Refuse']},
           {account: 130, firstName: 'Human Resources15', lastName: 200, status: 300, actions: ['Approve', 'Refuse']}];
-      self.datasource = new oj.ArrayTableDataSource(deptArray, {idAttribute: 'account'});
+        self.datasource = new oj.ArrayTableDataSource(deptArray, {idAttribute: 'account'});
+        
+        self.disableHandler = function(data, event){
+            debugger;
+        };
+        self.enableHandler = function(data, event){
+            debugger;
+        };
+        self.approveHandler = function(data, event){
+            debugger;
+        };
+        self.refuseHandler = function(data, event){
+            debugger;
+        };
       /**
        * Optional ViewModel method invoked when this ViewModel is about to be
        * used for the View transition.  The application can put data fetch logic
