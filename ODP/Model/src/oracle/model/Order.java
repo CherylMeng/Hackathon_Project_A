@@ -24,6 +24,8 @@ public class Order {
     
     private Price total;
     
+    private String justification;
+    
     private String createdTime;
     
     private String submittedTime;
@@ -194,7 +196,15 @@ public class Order {
     public String getReceiverName() {
         return ReceiverName;
     }
-    
+
+    public void setJustification(String justification) {
+        this.justification = justification;
+    }
+
+    public String getJustification() {
+        return justification;
+    }
+
     public void calculateTotalPrice(HashMap<Long, Double> currencyMap){
         long targetCurrency = this.total.getCurrencyID();
         double totalPrice = 0.0;

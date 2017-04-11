@@ -3,6 +3,7 @@ package oracle.utils;
 
 public class DBConstant {
     public static final String USER_STATUS_CREATED = "CREATED";
+    public static final String USER_STATUS_SUBMITTED = "SUBMITTED";
     public static final String USER_STATUS_APPROVED = "APPROVED";
     public static final String USER_STATUS_REFUSED = "REFUSED";
     public static final String USER_STATUS_ENABLED = "ENABLED";
@@ -21,7 +22,7 @@ public class DBConstant {
     public static final String USER_ROLE_ADMIN = "Administrator";
     public static final String USER_ROLE_REQUESTOR = "Requestor";
     public static final String USER_ROLE_MANAGER = "Manager";
-    public static final String USER_ROLE_SIPPLIER = "Supplier";
+    public static final String USER_ROLE_SUPPLIER = "Supplier";
     
     public static final String ORDER_ROLE_REQUESTOR = "REQUESTOR";
     public static final String ORDER_ROLE_RECEIVER = "RECEIVER";
@@ -31,4 +32,9 @@ public class DBConstant {
     public static final String MANAGEMENT_TYPE_OFFICEDEPOT = "OfficeDepot";
     
     public static final String UPDATE_TIME_SUFFIX = "_TIME";
+    
+    public static final String SITE_MAP = "site";
+    public static final String MANAGER_MAP = "manager";
+    public static final String CURRENCY_MAP = "currency";
+    public static final String ORDER_TYPE_MAP = "orderType";
 }
