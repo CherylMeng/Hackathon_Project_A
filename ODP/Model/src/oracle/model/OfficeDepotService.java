@@ -7,9 +7,7 @@ import oracle.db.DBConnection;
 
 public class OfficeDepotService {
     
-    private static CatalogService cs = new CatalogService();
-    
-    private static CatalogTree tree = cs.getTree();
+    private static CatalogTree tree = CatalogService.getTree();
     
     private static HashMap<String, Long> currencyMap = DBConnection.getCurrencyMap();
     

@@ -2,6 +2,7 @@ package oracle.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import oracle.db.DBConnection;
 
@@ -9,11 +10,27 @@ import oracle.utils.DBConstant;
 
 public class OrderService {
     
+    private static ToDoListService todoListService = new ToDoListService();
+    
+    private static NotificationService notificationService = new NotificationService();
+    
     private static HashMap<String, String> endingStateMap = DBConnection.getEndingStatusMap();
     
     private static HashMap<String, Long> currrencyMap = DBConnection.getCurrencyMap();
     
     private static HashMap<String, Long> orderTypeMap = DBConnection.getOrderTypeMap();
+    
+    private static HashMap<Long, String> actionMap = DBConnection.getActionTypeMap();
+    
+    private static HashMap<String, Long> reversedHashMap = null;
+    
+    static{
+        reversedHashMap = new HashMap<String, Long>();
+        Set<Long> keys = actionMap.keySet();
+        for (Long key : keys) {
+            reversedHashMap.put(actionMap.get(key), key);
+        }
+    }
     
     public ArrayList<FormElement> showOrderDetails(long orderID){
         ArrayList<FormElement> orderDetails = new ArrayList<FormElement>();
@@ -104,7 +121,15 @@ public class OrderService {
     }
     
     public boolean updateOrderStatus(long orderID, String action){
-        return DBConnection.updateOrderStatus(orderID, endingStateMap.get(action));
+        boolean success = DBConnection.updateOrderStatus(orderID, endingStateMap.get(action));
+        Order order = DBConnection.getOrderById(orderID);
+        long toDoListTypeID = -1;
+        if(DBConstant.ORDER_STATUS_SUBMITTED.equals(order.getOrderStatusName()) || DBConstant.ORDER_STATUS_APPROVED.equals(order.getOrderStatusName())) {
+            toDoListTypeID = todoListService.createToDoListForOrder(order);
+        }
+        long receiverID = -1;
+        notificationService.createNotificationForOrder(orderID, order.getRequestor(), toDoListTypeID, reversedHashMap.get(action));
+        return success;
     }
     
     public HashMap<String, HashMap<String, Long>> checkout(){

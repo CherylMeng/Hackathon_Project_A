@@ -73,7 +73,7 @@ public class DBConnection {
     public static boolean userAuth(String username, String password) {
         Connection conn = getConnection();
         String sql =
-            "SELECT USER_ID FROM USERS WHERE NAME = ? AND PASSWORD = ? AND STATUS NOT IN (SELECT STATUS_ID FROM USER_STATUS WHERE STATUS_NAME = 'DELETED' OR STATUS = 'REFUSED')";
+            "SELECT USER_ID FROM USERS WHERE NAME = ? AND PASSWORD = ? AND STATUS NOT IN (SELECT STATUS_ID FROM USER_STATUS WHERE STATUS_NAME = 'DELETED' OR STATUS_NAME = 'REFUSED')";
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(sql);
@@ -1773,6 +1773,40 @@ public class DBConnection {
         return false;
     }
     
+    public static ToDoListItem getToDoListById(long toDoListID){
+        String selectToDoListSql = "SELECT * FROM TO_DO_LIST_ITEM WHERE ITEM_ID = ?";
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        ToDoListItem toDoList = null;
+        try {
+            pstmt = conn.prepareStatement(selectToDoListSql);
+            pstmt.setLong(1, toDoListID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                toDoList = new ToDoListItem();
+                while (rs.next()) {
+                    toDoList.setToDoListItemID(toDoListID);
+                    toDoList.setTypeID(rs.getLong("TYPE_ID"));
+                    toDoList.setOwnerID(rs.getLong("OWNER_ID"));
+                    toDoList.setAssigneeID(rs.getLong("ASSIGNEE_ID"));
+                    toDoList.setOrderID(rs.getLong("ORDER_ID"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return toDoList;
+    }
+    
     public static int getToDoListNum(long assigneeID) {
         String getToDoListSql = "SELECT COUNT(*) NUM FROM TO_DO_LIST_ITEM WHERE ASSIGNEE_ID = ? AND IS_FINISHED = 0";
         int toDoListNum = -1;
@@ -1872,7 +1906,6 @@ public class DBConnection {
     }
     
     public static long createNotification(Notification notification) {
-        String getNotificationMessageSql = "SELECT NOTIFICATION_MASSAGE_PATERN FROM ACTION_MAPPING WHERE MAPPING_ID = ?";
         String getNotificationIdSql = "SELECT SEQ_PROCUREMENT_NOTIFICATIONM_ID.NEXTVAL NOTIFICATION_ID FROM DUAL";
         String addNotificationSql = "INSERT INTO NOTIFICATION(NOTIFICATION_ID, ACTION_MAPPING_ID, RECEIVER_ID, MESSAGE, IS_READ) VALUES (?, ?, ?, ?, 0)";
         Connection conn = getConnection();
@@ -1881,21 +1914,8 @@ public class DBConnection {
         long notificationID = -1;
         String message = null;
         try {
-            pstmt = conn.prepareStatement(getNotificationMessageSql);
-            pstmt.setLong(1, notification.getActionMappingID());
-            ResultSet rs = pstmt.executeQuery();
-            if (rs != null) {
-                while (rs.next()) {
-                    message = rs.getString("NOTIFICATION_MASSAGE_PATERN");
-                }
-            }
-            rs.close();
-            pstmt.close();
-            message = message.replaceAll("<ORDER>", Long.toString(notification.getOrderID()));
-            notification.setMessage(message);
-            
             stmt = conn.createStatement();
-            rs = stmt.executeQuery(getNotificationIdSql);
+            ResultSet rs = stmt.executeQuery(getNotificationIdSql);
             if (rs != null) {
                 while (rs.next()) {
                     notificationID = rs.getLong("NOTIFICATION_ID");
@@ -1954,6 +1974,38 @@ public class DBConnection {
             }
         }
         return false;
+    }
+    
+    public static Notification getActionMappedNotification(long toDoListTypeID, long actionID){
+        String selectToDoListTypeIdSql = "SELECT MAPPING_ID, NOTIFICATION_MASSAGE_PATERN FROM ACTION_MAPPING WHERE TO_DO_LIST_TYPE_ID = ? AND ACTION_ID = ?";
+        Connection conn = getConnection();
+        PreparedStatement pstmt = null;
+        Notification notification = null;
+        try {
+            pstmt = conn.prepareStatement(selectToDoListTypeIdSql);
+            pstmt.setLong(1, toDoListTypeID);
+            pstmt.setLong(2, actionID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                notification = new Notification();
+                while (rs.next()) {
+                    notification.setActionMappingID(rs.getLong("MAPPING_ID"));
+                    notification.setMessage(rs.getString("NOTIFICATION_MASSAGE_PATERN"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return notification;
     }
     
     public static HashMap<Long, String> getActionTypeMap(){
@@ -2104,7 +2156,7 @@ public class DBConnection {
         //System.out.println(getConnection());
         //getUserRoles();
         //System.out.println(isUserExist("Test"));
-        //System.out.println(userAuth("Test","passwd"));
+        //System.out.println(userAuth("huawei","huawei"));
         //System.out.println(getRegisterUserRoleMap());
         //System.out.println(updateUserStatus(1, DBConstant.USER_STATUS_ENABLED));
         //System.out.println(getNewUserID(1));

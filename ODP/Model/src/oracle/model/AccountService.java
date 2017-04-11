@@ -2,6 +2,7 @@ package oracle.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import oracle.db.DBConnection;
 
@@ -11,9 +12,23 @@ public class AccountService {
     
     private static ToDoListService todoListService = new ToDoListService();
     
+    private static NotificationService notificationService = new NotificationService();
+    
     private static HashMap<String, String> endingStateMap = DBConnection.getEndingStatusMap();
     
     private static HashMap<String, Long> statusMap = DBConnection.getInitialStatusMap();
+    
+    private static HashMap<Long, String> actionMap = DBConnection.getActionTypeMap();
+    
+    private static HashMap<String, Long> reversedHashMap = null;
+    
+    static{
+        reversedHashMap = new HashMap<String, Long>();
+        Set<Long> keys = actionMap.keySet();
+        for (Long key : keys) {
+            reversedHashMap.put(actionMap.get(key), key);
+        }
+    }
     
     public boolean login(String userName, String password){
         return DBConnection.userAuth(userName, password);
@@ -88,6 +103,8 @@ public class AccountService {
     }
     
     public boolean submitAccount(long userID){
+        User user = DBConnection.getUser(userID, true, false);
+        todoListService.createToDoListForAccount(user);
         return DBConnection.updateUserStatus(userID, DBConstant.USER_STATUS_SUBMITTED);
     }
     
@@ -152,7 +169,20 @@ public class AccountService {
         return todoList;
     }
     
+    public HashMap<String, ArrayList<Notification>> checkNotifications(long userID){
+        HashMap<String, ArrayList<Notification>> notifications = new HashMap<String, ArrayList<Notification>>();
+        ArrayList<Notification> notificationList = DBConnection.getNotification(userID, true);
+        notifications.put("notifications", notificationList);
+        
+        return notifications;
+    }
+    
     public boolean updateAccountStatus(long userID, String action){
+        User user = DBConnection.getUser(userID, true, false);
+        String assigneeRole = (DBConstant.USER_ROLE_REQUESTOR.equals(user.getRole()) || DBConstant.USER_ROLE_MANAGER.equals(user.getRole())) ? DBConstant.USER_ROLE_MANAGER : DBConstant.USER_ROLE_ADMIN;
+        String ownerRole = DBConstant.USER_ROLE_MANAGER.equals(assigneeRole) ? DBConstant.USER_ROLE_REQUESTOR : DBConstant.USER_ROLE_SUPPLIER;
+        long toDoListTypeID = DBConnection.getToDoListType(assigneeRole, ownerRole, DBConstant.MANAGEMENT_TYPE_ACCOUNT);
+        notificationService.createNotificationForAccount(userID, user.getUsername(), toDoListTypeID, reversedHashMap.get(action));
         return DBConnection.updateUserStatus(userID, endingStateMap.get(action));
     }
     
@@ -191,6 +221,10 @@ public class AccountService {
     
     public static void main(String[] args) {
         AccountService as = new AccountService();
-        System.out.println(as.getRegisterRoles());
+        //System.out.println(as.updateAccountStatus(3, "Enable"));
+        //as.getAllAccounts(2);
+        //System.out.println(as.getAllAccounts(DBConstant.USER_ROLE_SUPPLIER).size());
+        //System.out.println(as.showHomePage(3));
+        System.out.println(as.checkNotifications(3));
     }
 }

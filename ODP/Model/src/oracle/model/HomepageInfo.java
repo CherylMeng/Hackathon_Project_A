@@ -15,7 +15,7 @@ public class HomepageInfo {
     
     private int notificationNum;
     
-    private ArrayList<Notification> NotificationList;
+    private ArrayList<Notification> notificationList;
     
     private ArrayList<ToDoListItem> todoList;
 
@@ -36,11 +36,11 @@ public class HomepageInfo {
     }
 
     public void setNotificationList(ArrayList<Notification> NotificationList) {
-        this.NotificationList = NotificationList;
+        this.notificationList = NotificationList;
     }
 
     public ArrayList<Notification> getNotificationList() {
-        return NotificationList;
+        return notificationList;
     }
 
     public void setTodoListItem(ArrayList<ToDoListItem> todoListItem) {
