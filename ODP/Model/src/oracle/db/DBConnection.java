@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import oracle.engine.IService;
 import oracle.model.ActionType;
 import oracle.model.Catalog;
 import oracle.model.Notification;
@@ -73,7 +74,7 @@ public class DBConnection {
     public static boolean userAuth(String username, String password) {
         Connection conn = getConnection();
         String sql =
-            "SELECT USER_ID FROM USERS WHERE NAME = ? AND PASSWORD = ? AND STATUS NOT IN (SELECT STATUS_ID FROM USER_STATUS WHERE STATUS_NAME = 'DELETED' OR STATUS = 'REFUSED')";
+            "SELECT USER_ID FROM USERS WHERE NAME = ? AND PASSWORD = ? ";
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(sql);
@@ -2096,25 +2097,6 @@ public class DBConnection {
     }
 
     public static void main(String[] args) {
-        //System.out.println(getConnection());
-        //getUserRoles();
-        //System.out.println(isUserExist("Test"));
-        //System.out.println(userAuth("Test","passwd"));
-        //System.out.println(getRegisterUserRoleMap());
-        //System.out.println(updateUserStatus(1, DBConstant.USER_STATUS_ENABLED));
-        //System.out.println(getNewUserID(1));
-        //System.out.println(getUser(4, true, true).getUserInfo());
-        //System.out.println(deleteCatalogName(46));
-        //System.out.println(getCataLogByParent(0));
-        //updateCatalogName(46, "Bookbinding Supplie");
-        //System.out.println(getSkuByOfficeDepot(1));
-        //getOrders(1, DBConstant.ORDER_ROLE_REQUESTOR);
-        //System.out.println(getManagerMap());
-        //System.out.println(getSiteMap());
-        //System.out.println(getCurrencyMap());
-        //System.out.println(getOrderTypeMap());
-        //System.out.println(getNotificationNum(1));
-        //System.out.println(getToDoListNum(1));
-        //System.out.println(getUserByRole(DBConstant.USER_ROLE_SUPPLIER));
+        DBConnection.userAuth("Admin", "Admin");
     }
 }

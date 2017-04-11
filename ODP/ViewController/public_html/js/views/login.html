@@ -1,0 +1,54 @@
+<!--
+ Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-hybrid-padding">
+    <header class="home-page-head">
+        <h3 class="home-page-title">Office Depot Procurement System</h3>
+    </header>
+    <div class="oj-form-layout">
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">  
+            <div class="oj-flex">  
+                <div class="oj-flex-item">
+                    <label for="control1">Account</label>
+                </div>
+                <div class="oj-flex-item">
+                    <input id="control1" 
+                           data-bind="ojComponent: {component: 'ojInputText', 
+                                            value:account, required: true}">
+                </div>
+            </div>
+            <div class="oj-flex"> 
+                <div class="oj-flex-item">
+                    <label  for="control3">Password</label>
+                </div>
+                <div class="oj-flex-item">
+                    <input id="control3" type="password"
+                           data-bind="ojComponent: {component: 'ojInputPassword', value:password, required: true}">
+                </div>
+            </div>
+        </div>    
+        <br><br>
+        <div class="oj-flex"> 
+            <div class="oj-flex-item oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                <button 
+                    id="login" 
+                    type="button" 
+                    data-bind="ojComponent: {
+                  component: 'ojButton', 
+                  label: 'Log In',
+                  disabled: shouldDisableLogin()}, 
+                click: loginHandler"></button>
+            </div>
+            <div class="oj-flex-item oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                <button 
+                    id="cancel" 
+                    type="button" 
+                    data-bind="ojComponent: {
+                  component: 'ojButton', 
+                  label: 'Cancel'}, 
+                click: cancelHandler"></button>
+            </div>
+        </div>
+    </div>
+</div>

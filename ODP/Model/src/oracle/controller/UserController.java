@@ -1,4 +1,5 @@
 package oracle.controller;
+import oracle.model.AccountService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject; 
@@ -13,9 +14,23 @@ public class UserController implements IService {
 		int returnCode = 0;
 		String returnMsg = null;
 		JSONArray returnData = null;
-		if("sayhello".equals(operation)){
-			 returnCode = 201;
-			 returnMsg = "Controller is available";
+		if("login".equals(operation)){
+			String userName = requestJSON.getString("userName");
+			String password = requestJSON.getString("password");
+			if(userName.length() ==0 ||userName == null || password.length() == 0 || password == null){
+				returnCode = 404;
+				returnMsg = "Username or password cannot be null.";
+			}else{
+				AccountService accountService = new AccountService();
+				boolean isExist = accountService.login(userName, password);
+				if(isExist){
+					returnCode = 201;
+					returnMsg = "login successfully";
+				}else{
+					returnCode = 404;
+					returnMsg = "username or password is invalid.";
+				}
+			}
 		}  
 		responseJSON.put("returnCode",returnCode);
 		responseJSON.put("returnMsg", returnMsg);

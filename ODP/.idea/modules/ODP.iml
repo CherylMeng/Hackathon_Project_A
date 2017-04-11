@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="ODP" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../Model/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../Model/commons-beanutils-1.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-cli-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-codec-1.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-collections-3.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-fileupload-1.2.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-dbcp-1.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-fileupload-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-httpclient-3.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-io-1.3.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-io-1.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-io-2.0.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-lang-2.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-lang-2.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-logging-1.1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/json-lib-2.1-jdk15.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/commons-lang-2.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/json.test.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/json_simple-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/log4j-1.2.16.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/mysql-connector-java-5.0.4-bin.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/ojdbc6-12.1.0.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/org.json.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/sqljdbc4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Model/sqlserver2008.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../Model/org.json.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
