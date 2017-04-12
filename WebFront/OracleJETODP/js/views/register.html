@@ -1,0 +1,245 @@
+<!--
+ Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-hybrid-padding">
+    <header class="home-page-head">
+        <h3 class="home-page-title">Register</h3>
+    </header>
+    <div id="complete-example" 
+         class="oj-form oj-md-odd-cols-4 oj-md-labels-inline oj-sm-odd-cols-12">
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="username">Username</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="username" 
+                    type="text" 
+                    autocomplete="off" 
+                    required 
+                    name="username" 
+                    placeholder="input username here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: username, 
+            validators: [{
+            type: 'regExp', 
+            required: true}]}">
+            </div>
+        </div>
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="password">Password</label>        
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="password" 
+                    type="password" 
+                    name="password" 
+                    required
+                    title="Enter at least 6 characters including a number, one uppercase and lowercase letter" 
+                    data-bind="ojComponent: {
+            component: 'ojInputPassword', 
+            value: password, 
+            title:
+            '\x3Chtml><b>at least 6 characters</b> including a number, upper and lowercase letter\x3C/html>',
+            validators: [{
+              type: 'regExp', 
+              options : {
+                pattern: '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}', 
+                label: 'Password',
+                messageSummary : '\'{label}\' too Weak',
+                messageDetail: 
+                '\x3chtml\x3eYou \x3cb\x3emust enter\x3c/b\x3e a password that meets our security levels.\x3c/html\x3e'}}]}"/>
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="cpassword">Confirm Password</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="cpassword" 
+                    type="password" 
+                    name="cpassword" 
+                    required="required"
+                    data-bind="ojComponent: {
+            component: 'ojInputPassword', 
+            value: passwordRepeat, 
+            validators: [equalToPassword]}"/>
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="firstname">First Name</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="firstname" 
+                    type="text" 
+                    autocomplete="off" 
+                    name="firstname" 
+                    placeholder="input first name here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: firstName, 
+            validators: [{
+            type: 'regExp'}]}">
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="lastname">Last Name</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="lastname" 
+                    type="text" 
+                    autocomplete="off" 
+                    name="lastname" 
+                    placeholder="input last name here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: lastName, 
+            validators: [{
+            type: 'regExp'}]}">
+            </div>
+        </div>
+        
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="department">Department</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="department" 
+                    type="text" 
+                    autocomplete="off" 
+                    name="department" 
+                    placeholder="input department here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: department, 
+            validators: [{
+            type: 'regExp'}]}">
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="site">Site</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="site" 
+                    name="site" 
+                    list="siteList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedSite, 
+            messagesCustom: selectedSiteMessages}"
+                    />
+                <datalist id="siteList" data-bind="foreach: sites">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>
+
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="address">Address</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="address" 
+                    type="address" 
+                    name="address" 
+                    placeholder="input address here"
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: address,
+            messagesCustom: addressMessages}"/>           
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="telNum">Phone Number</label>
+            </div>
+            <div class="oj-flex-item">
+                <input
+                    id="telNum"
+                    type="text" 
+                    placeholder="input phone number here"
+                    name="telNum"
+                    title="a US phone number"
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: phoneNumber, 
+            validators : [{
+              type: 'regExp', 
+              options : {
+                pattern: '\\d{8,}', 
+                hint: 
+                'enter a phone number including area \n\
+                code with no spaces or special characters',
+                messageSummary: 
+                'Value \'{value}\' Invalid',
+                messageDetail: 
+                'You must enter a 10 digit phone number \n\
+                  starting with area code.'}}],
+            messagesCustom: phoneNumberMessages}"/>          
+            </div>
+        </div>
+        
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="manager">Manager</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="manager" 
+                    name="manager" 
+                    list="managerList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedManager, 
+            messagesCustom: selectedManagerMessages}"
+                    />
+                <datalist id="siteList" data-bind="foreach: managers">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                <button 
+                    id="register" 
+                    type="button" 
+                    data-bind="ojComponent: {
+                  component: 'ojButton', 
+                  label: 'Register',
+                  disabled: shouldDisableRegister()}, 
+                click: registerHandler"></button>
+            </div>
+            <div class="oj-flex-item oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                <button 
+                    id="cancel" 
+                    type="button" 
+                    data-bind="ojComponent: {
+                  component: 'ojButton', 
+                  label: 'Cancel'}, 
+                click: cancelHandler"></button>
+            </div>
+        </div>
+        <br/><br/>
+    </div>
+</div>

@@ -11,7 +11,8 @@ public class SKU {
     private String skuName;
     
     private String skuValue;
-
+    
+    private boolean isMandatory;
 
     public void setSkuID(long skuID) {
         this.skuID = skuID;
@@ -51,5 +52,14 @@ public class SKU {
 
     public String getSkuValue() {
         return skuValue;
+    }
+
+
+    public void setIsMandatory(boolean isMandatory) {
+        this.isMandatory = isMandatory;
+    }
+
+    public boolean isMandatory() {
+        return isMandatory;
     }
 }
