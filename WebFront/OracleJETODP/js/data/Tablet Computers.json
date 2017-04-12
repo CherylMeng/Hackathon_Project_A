@@ -1,0 +1,20 @@
+[
+    {
+        "ID": 1,
+        "TITLE": "Honor Note WIFI Tablet PC 16G",
+        "PRICE": 1129.00,
+        "IMAGE_URL": "images/7_default.jpg"
+    },
+    {
+        "ID": 2,
+        "TITLE": "iPad Mini4 WiFi 128G Golden MK9Q2CH/A 7.9-inch Retina Tablet PC",
+        "PRICE": 3188.00,
+        "IMAGE_URL": "images/7_default.jpg"
+    },
+	{
+        "ID": 3,
+        "TITLE": "Surface Pro 4 12.3-inch Tablet PC - Core I5/8GB/256GB/win10",
+        "PRICE": 7566.00,
+        "IMAGE_URL": "images/7_default.jpg"
+    }
+]

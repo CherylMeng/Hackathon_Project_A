@@ -1,0 +1,14 @@
+[
+    {
+        "ID": 35,
+        "TITLE": "TP-Link TL-PA1200 Wireless AP",
+        "PRICE": 319.00,
+        "IMAGE_URL": "/images/27_default.jpg"
+    },
+	{
+        "ID": 36,
+        "TITLE": "HUAWEI PT530 500M AP",
+        "PRICE": 279.00,
+        "IMAGE_URL": "/images/27_default.jpg"
+    }
+]

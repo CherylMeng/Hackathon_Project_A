@@ -1,0 +1,14 @@
+[
+    {
+        "ID": 31,
+        "TITLE": "ThinkPad T431S X230S X240s X240 45W 20V 2.25A Adapter",
+        "PRICE": 118.00,
+        "IMAGE_URL": "/images/25_default.jpg"
+    },
+	{
+        "ID": 32,
+        "TITLE": "DELL 19.5V 3.34A 65W Adapter PA-12",
+        "PRICE": 108.00,
+        "IMAGE_URL": "/images/25_default.jpg"
+    }
+]
