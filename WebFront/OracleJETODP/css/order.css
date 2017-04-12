@@ -1,0 +1,41 @@
+/*
+style of order page
+*/
+
+.order_container {
+    margin: 0 auto;
+}
+
+.order_ojtree_left{
+    width:220px;
+    height: auto;
+    position:absolute;
+}
+
+.order_displaylist_right {
+    /*background: #888888;*/
+    height:100px;
+    margin-left:250px;
+}
+
+.order_single_product{
+    width: 150px;
+    height: 150px;
+    background: #3366ff;
+    position: absolute;
+}
+
+
+/* masonry style */
+.order-tile {
+    font-weight: bold;
+}
+    
+.order-scroll-container {
+    overflow: auto;
+}
+
+#ojDialogWrapper-order_my_cart_modelessDialog{
+    width: 1000px;
+    height: auto;
+}
