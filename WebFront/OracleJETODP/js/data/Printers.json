@@ -1,0 +1,14 @@
+[
+    {
+        "ID": 40,
+        "TITLE": "Fuji Xerox Phaser 7800 A3彩色激光打印机 自动双面打印",
+        "PRICE": 88000.00,
+        "IMAGE_URL": "/images/31_default.jpg"
+    },
+	{
+        "ID": 41,
+        "TITLE": "HP Designjet T795 44-inch B0 (CR649C)Designjet T795",
+        "PRICE": 33999.00,
+        "IMAGE_URL": "/images/31_default.jpg"
+    }
+]

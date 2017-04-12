@@ -20,20 +20,26 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojrouter', 'ojs/ojknockout', 'ojs/ojarray
        // Router setup
        self.router = oj.Router.rootInstance;
        self.router.configure({
-         'dashboard': {label: 'Dashboard', isDefault: true},
-         'incidents': {label: 'Incidents'},
+         'homepage': {label: 'Homepage', isDefault: true},
+         'order': {label: 'Order'},
+         'history': {label: 'History'},
          'customers': {label: 'Customers'},
+         'login': {label: 'Login'},
+         'register': {label: 'Register'},
+         'account': {label: 'Account'},
          'about': {label: 'About'}
        });
       oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
 
       // Navigation setup
       var navData = [
-      {name: 'Dashboard', id: 'dashboard',
+      {name: 'Home Page', id: 'homepage',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
-      {name: 'Incidents', id: 'incidents',
+      {name: 'Order', id: 'order',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
-      {name: 'Customers', id: 'customers',
+      {name: 'History', id: 'history',
+       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-catalog-icon-24'},
+      {name: 'Customers', id: 'account',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
       {name: 'About', id: 'about',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}

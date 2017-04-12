@@ -1,0 +1,20 @@
+[
+    {
+        "ID": 7,
+        "TITLE": "DELL Vostro5460-1408 23.8-inch All-in-one BlueTooth WiFi (i3-6100T 4G 1T)",
+        "PRICE": 4199.00,
+        "IMAGE_URL": "/images/9_default.jpg"
+    },
+    {
+        "ID": 8,
+        "TITLE": "Apple iMac MK142CH/A 21.5-inch All-in-one i5-1.6GHZ/8GB/1TB/Intel HD Graphics 6000",
+        "PRICE": 7188.00,
+        "IMAGE_URL": "/images/9_default.jpg"
+    },
+	{
+        "ID": 9,
+        "TITLE": "Lenovo AIO700-22 21.5-inch All-in-one i3-6100T 4GMemory 1T GT930 2G",
+        "PRICE": 3666.00,
+        "IMAGE_URL": "/images/9_default.jpg"
+    }
+]

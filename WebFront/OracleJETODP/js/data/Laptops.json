@@ -1,0 +1,20 @@
+[
+    {
+        "ID": 4,
+        "TITLE": "DELL 15ER-4725B 15.6-inch Laptop black-i7-7500U/4G/1TB/R5M315",
+        "PRICE": 4099.00,
+        "IMAGE_URL": "images/8_default.jpg"
+    },
+    {
+        "ID": 5,
+        "TITLE": "Apple MacBook Pro MLUQ2CH/A 13.3-inch Silver Laptop -2.0GHz Intel Core i5 8GB/256GB",
+        "PRICE": 10688.00,
+        "IMAGE_URL": "images/8_default.jpg"
+    },
+	{
+        "ID": 6,
+        "TITLE": "ThinkPad T460p 20FWA00NCD（22CD）(2UCD) I5-6300HQ T460P-2UCD i5-6300HQ 4G 128G+500G",
+        "PRICE": 8499.00,
+        "IMAGE_URL": "images/8_default.jpg"
+    }
+]
