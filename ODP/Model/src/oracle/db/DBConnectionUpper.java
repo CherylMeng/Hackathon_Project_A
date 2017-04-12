@@ -25,15 +25,15 @@ import oracle.model.UserInfoItem;
 import oracle.utils.DBConstant;
 import oracle.utils.DBUtils;
 
-public class DBConnection {
+public class DBConnectionUpper {
     /**
      *
      * @return
      */
     public static Connection getConnection() {
         String forName = "oracle.jdbc.OracleDriver";
-        String dbUrl = "jdbc:oracle:thin:@localhost:1521:orcl";
-        String dbUser = "procurement";
+        String dbUrl = "jdbc:oracle:thin:@slc09xzf.us.oracle.com:1521:epps";
+        String dbUser = "c##procurement";
         String dbPwd = "group3";
         Connection conn = null;
         try {
@@ -313,7 +313,7 @@ public class DBConnection {
 
     public static long createUser(long roleID) {
         Connection conn = getConnection();
-        String getUserIdSql = "SELECT SEQ_USER_ID.NEXTVAL USER_ID FROM DUAL";
+        String getUserIdSql = "SELECT SEQ_PROCUREMENT_USER_ID.NEXTVAL USER_ID FROM DUAL";
         String addUserSql = "INSERT INTO USERS (USER_ID, ROLE_ID, STATUS) VALUES (?, ?, 1)";
         PreparedStatement pstmt = null;
         Statement stmt = null;
@@ -496,7 +496,7 @@ public class DBConnection {
 
     public static long saveUserInfoItem(UserInfoItem item, long userID) {
         Connection conn = getConnection();
-        String getUserInfoIdSql = "SELECT SEQ_USER_INFO_ID.NEXTVAL USER_INFO_ID FROM DUAL";
+        String getUserInfoIdSql = "SELECT SEQ_PROCUREMENT_USER_INFO_ID.NEXTVAL USER_INFO_ID FROM DUAL";
         String addUserInfoSql =
             "INSERT INTO USER_INFO (USER_INFO_ID, USER_ID, USER_INFO_TYPE, USER_INFO_VALUE) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = null;
@@ -635,7 +635,7 @@ public class DBConnection {
 
     public static long addCataLog(Catalog newCatalog) {
         Connection conn = getConnection();
-        String getCatalogIdSql = "SELECT SEQ_CATALOG_ID.NEXTVAL CATALOG_ID FROM DUAL";
+        String getCatalogIdSql = "SELECT SEQ_PROCUREMENT_CATALOG_ID.NEXTVAL CATALOG_ID FROM DUAL";
         String addCatalogSql =
             "INSERT INTO CATALOG(CATALOG_ID, PARENT_CATALOG, CATALOG_DEPTH, CATALOG_NAME, IS_DELETED) VALUES (?, ?, ?, ?, 0)";
         Statement stmt = null;
@@ -812,7 +812,7 @@ public class DBConnection {
 
     public static long addPrice(Price price) {
         Connection conn = getConnection();
-        String getPriceID = "SELECT SEQ_PRICE_ID.NEXTVAL PRICE_ID FROM DUAL";
+        String getPriceID = "SELECT SEQ_PROCUREMENT_PRICE_ID.NEXTVAL PRICE_ID FROM DUAL";
         String addPriceSQL = "INSERT INTO PRICE(PRICE_ID, PRICE_VALUE, CURRENCY_ID) VALUES (?, ?, ?)";
         PreparedStatement pstmt = null;
         Statement stmt = null;
@@ -950,7 +950,7 @@ public class DBConnection {
 
     public static long addSku(SKU sku) {
         Connection conn = getConnection();
-        String getSkuIdSql = "SELECT SEQ_SKU_ID.NEXTVAL SKU_ID FROM DUAL";
+        String getSkuIdSql = "SELECT SEQ_PROCUREMENT_SKU_ID.NEXTVAL SKU_ID FROM DUAL";
         String addSkuSql = "INSERT INTO SKU(SKU_ID, SKU_TYPE_ID, SKU_VALUE, IS_DELETED) VALUES (?, ?, ?, 0)";
         PreparedStatement pstmt = null;
         Statement stmt = null;
@@ -1183,7 +1183,7 @@ public class DBConnection {
 
     public static long addOfficeDepot(OfficeDepot officeDepot) {
         Connection conn = getConnection();
-        String getOfficeDepotIDSql = "SELECT SEQ_OFFICE_DEPOT_ID.NEXTVAL OFFICE_DEPORT_ID FROM DUAL";
+        String getOfficeDepotIDSql = "SELECT SEQ_PROCUREMENT_OFFICE_DEPOT_ID.NEXTVAL OFFICE_DEPORT_ID FROM DUAL";
         String addOfficeDepotSql =
             "INSERT INTO OFFICE_DEPOT(ITEM_ID, CATALOG_ID, SUPPLIER_ID, IS_DELETED) VALUES (?, ?, ?, 0)";
         PreparedStatement pstmt = null;
@@ -1324,7 +1324,7 @@ public class DBConnection {
 
     public static long addOrderItem(OrderItem orderItem) {
         Connection conn = getConnection();
-        String getOrderItemIdSql = "SELECT SEQ_ORDER_ITEM_ID.NEXTVAL ORDER_ITEM_ID FROM DUAL";
+        String getOrderItemIdSql = "SELECT SEQ_PROCUREMENT_ORDER_ITEM_ID.NEXTVAL ORDER_ITEM_ID FROM DUAL";
         String addOrderItemSql = "INSERT INTO ORDER_ITEM (ORDER_ID, OFFICE_DEPOT_ID, AMOUNT, DISCOUNT) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         Statement stmt = null;
@@ -1467,7 +1467,7 @@ public class DBConnection {
         long priceID = addPrice(order.getTotal());
         
         Connection conn = getConnection();
-        String getOrderItemIdSql = "SELECT SEQ_ORDER_ID.NEXTVAL ORDER_ID FROM DUAL";
+        String getOrderItemIdSql = "SELECT SEQ_PROCUREMENT_ORDER_ID.NEXTVAL ORDER_ID FROM DUAL";
         String addOrderItemSql = "INSERT INTO ORDER (ORDER_ID, ORDER_TYPE, ORDER_STATUS, REQUESTOR, RECEIVER, JUSTIFICATION, PRICE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         Statement stmt = null;
@@ -1547,7 +1547,7 @@ public class DBConnection {
     public static long createToDoListForOrder(Order order){
         User requestor = getUser(order.getRequestor(), true, false);
         String selectToDoListTypeIdSql = "SELECT TYPE_ID FROM TO_DO_LIST_TYPE WHERE ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND OWNER_ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND MANAGEMENT_ID = (SELECT TYPE_ID FROM MANAGEMENT_TYPE WHERE TYPE_NAME = ?)";
-        String getToDoListIdSql = "SELECT SEQ_TO_DO_LIST_ITEM_ID.NEXTVAL TO_DO_LIST_ITEM_ID FROM DUAL";
+        String getToDoListIdSql = "SELECT SEQ_PROCUREMENT_TO_DO_LIST_ITEM_ID.NEXTVAL TO_DO_LIST_ITEM_ID FROM DUAL";
         String addToDoListSql = "INSERT INTO TO_DO_LIST_ITEM(ITEM_ID, TYPE_ID, OWNER_ID, ASSIGNEE_ID, ORDER_ID, IS_FINISHED) VALUES (?, ?, ?, ?, ?, 0)";
         Connection conn = getConnection();
         PreparedStatement pstmt = null;
@@ -1643,7 +1643,7 @@ public class DBConnection {
     
     public static long createToDoListForAccount(User user){
         String selectToDoListTypeIdSql = "SELECT TYPE_ID FROM TO_DO_LIST_TYPE WHERE ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND OWNER_ROLE_ID = (SELECT ROLE_ID FROM USER_ROLE WHERE ROLE_NAME = ?) AND MANAGEMENT_ID = (SELECT TYPE_ID FROM MANAGEMENT_TYPE WHERE TYPE_NAME = ?)";
-        String getToDoListIdSql = "SELECT SEQ_TO_DO_LIST_ITEM_ID.NEXTVAL TO_DO_LIST_ITEM_ID FROM DUAL";
+        String getToDoListIdSql = "SELECT SEQ_PROCUREMENT_TO_DO_LIST_ITEM_ID.NEXTVAL TO_DO_LIST_ITEM_ID FROM DUAL";
         String addToDoListSql = "INSERT INTO TO_DO_LIST_ITEM(ITEM_ID, TYPE_ID, OWNER_ID, ASSIGNEE_ID, IS_FINISHED) VALUES (?, ?, ?, ?, 0)";
         Connection conn = getConnection();
         PreparedStatement pstmt = null;
@@ -1906,7 +1906,7 @@ public class DBConnection {
     }
     
     public static long createNotification(Notification notification) {
-        String getNotificationIdSql = "SELECT SEQ_NOTIFICATIONM_ID.NEXTVAL NOTIFICATION_ID FROM DUAL";
+        String getNotificationIdSql = "SELECT SEQ_PROCUREMENT_NOTIFICATIONM_ID.NEXTVAL NOTIFICATION_ID FROM DUAL";
         String addNotificationSql = "INSERT INTO NOTIFICATION(NOTIFICATION_ID, ACTION_MAPPING_ID, RECEIVER_ID, MESSAGE, IS_READ) VALUES (?, ?, ?, ?, 0)";
         Connection conn = getConnection();
         PreparedStatement pstmt = null;
@@ -2156,7 +2156,7 @@ public class DBConnection {
         //System.out.println(getConnection());
         //getUserRoles();
         //System.out.println(isUserExist("Test"));
-        System.out.println(userAuth("huawei","huawei"));
+        //System.out.println(userAuth("huawei","huawei"));
         //System.out.println(getRegisterUserRoleMap());
         //System.out.println(updateUserStatus(1, DBConstant.USER_STATUS_ENABLED));
         //System.out.println(getNewUserID(1));
