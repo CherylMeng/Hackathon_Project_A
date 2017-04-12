@@ -20,7 +20,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojrouter', 'ojs/ojknockout', 'ojs/ojarray
        // Router setup
        self.router = oj.Router.rootInstance;
        self.router.configure({
-         'dashboard': {label: 'Dashboard', isDefault: true},
+         'homepage': {label: 'Homepage', isDefault: true},
          'order': {label: 'Order'},
          'history': {label: 'History'},
          'customers': {label: 'Customers'},
@@ -33,7 +33,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojrouter', 'ojs/ojknockout', 'ojs/ojarray
 
       // Navigation setup
       var navData = [
-      {name: 'Dashboard', id: 'dashboard',
+      {name: 'Home Page', id: 'homepage',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
       {name: 'Order', id: 'order',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
@@ -63,7 +63,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojrouter', 'ojs/ojknockout', 'ojs/ojarray
 
       // Header
       // Application Name used in Branding Area
-      self.appName = ko.observable("ODP");
+      self.appName = ko.observable("App Name");
       // User Info used in Global Navigation area
       self.userLogin = ko.observable("john.hancock@oracle.com");
 

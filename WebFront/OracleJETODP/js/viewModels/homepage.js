@@ -7,12 +7,19 @@
  */
 define(['ojs/ojcore', 'knockout', 'jquery'],
  function(oj, ko, $) {
-  
-    function DashboardViewModel() {
+
+    function HomepageViewModel() {
       var self = this;
       // Below are a subset of the ViewModel methods invoked by the ojModule binding
       // Please reference the ojModule jsDoc for additionaly available methods.
 
+      self.roleName = ko.observable("Requestor");
+      self.username = ko.observable("xxxx");
+      self.notificationNum = ko.observable("1");
+      self.toDoListNum = ko.observable("10");
+      self.pageNavigationHandler = function(data, event){
+          ko.dataFor($("#navDrawer>div")[0]).router.go("customers");
+      };
       /**
        * Optional ViewModel method invoked when this ViewModel is about to be
        * used for the View transition.  The application can put data fetch logic
@@ -43,7 +50,7 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
 
 
       /**
-       * Optional ViewModel method invoked after the bindings are applied on this View. 
+       * Optional ViewModel method invoked after the bindings are applied on this View.
        * If the current View is retrieved from cache, the bindings will not be re-applied
        * and this callback will not be invoked.
        * @param {Object} info - An object with the following key-value pairs:
@@ -72,6 +79,6 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
      * each time the view is displayed.  Return an instance of the ViewModel if
      * only one instance of the ViewModel is needed.
      */
-    return new DashboardViewModel();
+    return new HomepageViewModel();
   }
 );
