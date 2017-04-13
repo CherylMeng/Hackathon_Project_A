@@ -24,7 +24,7 @@ define(['ojs/ojcore',
     'ojs/ojcollectiontabledatasource',
     'ojs/ojpagingtabledatasource',
     'ojs/ojdialog',
-    'data/data',
+    'data/data', 'ojs/ojfilmstrip'
 ],
         function (oj, ko, $) {
             
@@ -423,6 +423,115 @@ define(['ojs/ojcore',
                     }
                 }
                 
+                
+                
+                
+                
+                self.popPictureDialog = function(){
+                    $("#order_my_cart_pictureDialog").ojDialog('open');
+                };
+                self.closePictureDialog = function(){
+                    $("#order_my_cart_pictureDialog").ojDialog('close');
+                };
+                
+                self.chemicals = [
+                    { name: 'Hydrogen' },
+                    { name: 'Helium' },
+                    { name: 'Lithium' },
+                    { name: 'Beryllium' },
+                    { name: 'Boron' },
+                    { name: 'Carbon' },
+                    { name: 'Nitrogen' },
+                    { name: 'Oxygen' },
+                    { name: 'Fluorine' },
+                    { name: 'Neon' },
+                    { name: 'Sodium' },
+                    { name: 'Magnesium' }
+                ];
+
+                self.currDetailPage = ko.observable(0);
+
+                handleDetailCreate = function()
+                {
+                  var filmStrip = $("#detailFilmStrip");
+                  var pagingModel = filmStrip.ojFilmStrip("getPagingModel");
+                  pagingModel.on("beforePage", handleDetailBeforePage);
+                  handleDetailBeforePage();
+                };
+
+                handleDetailBeforePage = function(event)
+                {
+                  var filmStrip = $("#detailFilmStrip");
+                  var pagingModel = filmStrip.ojFilmStrip("getPagingModel");
+                  var pageCount = pagingModel.getPageCount();
+                  var pageIndex = event ? event.page : 0;
+
+                  //wrap in try..catch block because the detail filmstrip is 
+                  //initialized first and the master filmstrip is not yet 
+                  //available
+                  try
+                  {
+                    var masterFilmStrip = $("#masterFilmStrip");
+                    var masterPagingModel = 
+                      masterFilmStrip.ojFilmStrip("getPagingModel");
+                    var masterPage = masterPagingModel.getPage();
+                    var masterItemsPerPage = 
+                      masterFilmStrip.ojFilmStrip("getItemsPerPage");
+                    var newMasterPage = 
+                      Math.floor(pageIndex / masterItemsPerPage);
+                    //change master page in detail's beforePage event so that 
+                    //the master page change transitions at the same time as 
+                    //the detail page
+                    if (newMasterPage !== masterPage)
+                      masterPagingModel.setPage(newMasterPage);
+                  }
+                  catch (e)
+                  {
+                    //do nothing
+                  }
+                };
+
+                masterClick = function(data, event)
+                {
+                  //get the ko binding context for the item DOM element
+                  var context = ko.contextFor(event.target);
+                  //get the index of the item from the binding context
+                  var index = context.$index();
+                  //set currDetailPage in a timeout so that the page change 
+                  //transitions smoothly, otherwise it seems that there's some 
+                  //processing going on that interferes (maybe due to knockout)
+                  setTimeout(function() {
+                    self.currDetailPage(index);
+                    }, 50);
+                };
+
+                getDetailItemInitialDisplay = function(index)
+                {
+                  return index < 1 ? '' : 'none';
+                };
+
+                getMasterItemInitialDisplay = function(index)
+                {
+                  return index < 3 ? '' : 'none';
+                };
+
+                getMasterItemLabelId = function(index)
+                {
+                  return 'masterLabel' + index;
+                };
+
+                isMasterItemSelected = function(index)
+                {
+                  return self.currDetailPage() == index;
+                };
+
+                getMasterItemLabelledBy = function(index)
+                {
+                  var labelledBy = getMasterItemLabelId(index);
+                  if (isMasterItemSelected(index))
+                    labelledBy += " masterItemSelectedLabel";
+                  return labelledBy;
+                };
             }
 
             /*
