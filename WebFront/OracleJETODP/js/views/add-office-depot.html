@@ -1,0 +1,284 @@
+<!--
+ Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-hybrid-padding">
+    <header class="home-page-head">
+        <h3 class="home-page-title">Add Office Depot</h3>
+        <div class="notification-box">
+            <ul>
+              <li>
+                  <a>To Do List(<span data-bind="text: toDoListNum"></span>)</a>
+              </li>
+              <li>
+                  <a>Notification(<span data-bind="text: notificationNum"></span>)</a>
+              </li>
+            </ul>
+        </div>
+    </header>
+    <br><br><br>
+    <div id="complete-example" 
+         class="oj-form oj-md-odd-cols-4 oj-md-labels-inline oj-sm-odd-cols-12">
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="name">Name</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="name" 
+                    type="text" 
+                    autocomplete="off" 
+                    required 
+                    name="name" 
+                    placeholder="input name here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: name}">
+            </div>
+        </div>
+        <br>
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="price">Price</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="price" 
+                    type="text" 
+                    autocomplete="off" 
+                    required
+                    name="price" 
+                    placeholder="input price here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: price}">
+<!--                <input 
+                    id="currency" 
+                    name="currency" 
+                    list="currencyList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedCurrency}"
+                    />
+                <datalist id="currencyList" data-bind="foreach: currencys">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>-->
+
+            </div>
+        </div>
+<!--        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="catalog">Catalog</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="catalog" 
+                    name="catalog" 
+                    list="catalogList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedCatalog}"
+                    />
+                <datalist id="currencyList" data-bind="foreach: catalogs">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>
+                <input 
+                    id="subCatalog" 
+                    name="subCatalog" 
+                    list="subCatalogList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedSubCatalog}"
+                    />
+                <datalist id="currencyList" data-bind="foreach: subCatalogs">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>
+            </div>
+        </div>-->
+        <br>
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <div class="oj-label oj-component oj-combobox-label">
+                    <div class="oj-label-group">
+                        <label for="picture" class="oj-component-initnode">Picture</label>
+                    </div>
+                </div>
+            </div>
+            <div class="oj-flex-item">
+                <input type="file" name="picture" id="picture" data-bind = "change: fileSelected">
+                <button data-bind="click: uploadHandler">Upload</button>
+            </div>
+        </div>
+        <br>
+        <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center" data-bind="style:{'display': pictureList() && pictureList().length>0 ? 'flex':'none'}"> 
+            <div class="oj-flex-item">
+                <ul id="listview" class="oj-listview-card-layout" aria-label="list with card layout for items in group" 
+                    data-bind="ojComponent: {component: 'ojListView', data: pictureListDataSource, item: {template: 'item_grid_template'}, drillMode: 'none'}">
+                </ul>
+                <script type="text/html" id="item_grid_template">
+                    <li>
+                      <div>
+                        <div class="oj-panel demo-griditem-content demo-icon">
+                            <div style="width:100%;padding:0">
+                                <div data-bind="style: { backgroundImage: 'url(' + $data['data'] + ')',
+                                     backgroundRepeat: 'no-repeat', backgroundSize: '100%', height: '100px', width: '100%' }, attr: { 'aria-label': 'type' }"></div>
+                                <!--<img data-bind="attr:{id: id}">-->
+                            </div>
+                        </div>
+                        <div class="demo-griditem-content">
+                            <button data-bind="text: 'Delete', click: $parent.deletePictureHandler"></button>
+                        </div>
+                      </div>
+                    </li>
+                </script>
+            </div>
+        </div>
+        <br>
+<!--        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="brand">Brand</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="brand" 
+                    type="text" 
+                    autocomplete="off" 
+                    name="brand" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: brand, 
+            validators: [{
+            type: 'regExp'}]}">
+            </div>
+        </div>-->
+
+<!--        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="department">Department</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="department" 
+                    type="text" 
+                    autocomplete="off" 
+                    name="department" 
+                    placeholder="input department here" 
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: department, 
+            validators: [{
+            type: 'regExp'}]}">
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="currency">Site</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="currency" 
+                    name="currency" 
+                    list="currencyList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedCurrency}"
+                    />
+                <datalist id="currencyList" data-bind="foreach: currencys">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>
+
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="address">Address</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="address" 
+                    type="address" 
+                    name="address" 
+                    placeholder="input address here"
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: address}"/>           
+            </div>
+        </div>
+
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="telNum">Phone Number</label>
+            </div>
+            <div class="oj-flex-item">
+                <input
+                    id="telNum"
+                    type="text" 
+                    placeholder="input phone number here"
+                    name="telNum"
+                    title="a US phone number"
+                    data-bind="ojComponent: {
+            component: 'ojInputText', 
+            value: phoneNumber, 
+            validators : [{
+              type: 'regExp', 
+              options : {
+                pattern: '\\d{8,}', 
+                hint: 
+                'enter a phone number including area \n\
+                code with no spaces or special characters',
+                messageSummary: 
+                'Value \'{value}\' Invalid',
+                messageDetail: 
+                'You must enter a 10 digit phone number \n\
+                  starting with area code.'}}]}"/>          
+            </div>
+        </div>
+        
+        <div class="oj-flex"> 
+            <div class="oj-flex-item">
+                <label for="manager">Manager</label>
+            </div>
+            <div class="oj-flex-item">
+                <input 
+                    id="manager" 
+                    name="manager" 
+                    list="managerList"
+                    type="text" 
+                    data-bind="ojComponent: {
+            component: 'ojCombobox', 
+            value: selectedManager}"
+                    />
+                <datalist id="currencyList" data-bind="foreach: managers">
+                    <option data-bind="attr:{value:$data}, text:$data"></option>
+                </datalist>
+            </div>
+        </div>-->
+
+        <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center"> 
+            <div class="oj-flex-item">
+                <button 
+                    id="save" 
+                    type="button" 
+                    data-bind="ojComponent: {
+                  component: 'ojButton', 
+                  label: 'Save',
+                  disabled: shouldDisableSave()}, 
+                click: saveHandler"></button>
+                <button 
+                    id="cancel" 
+                    type="button" 
+                    data-bind="ojComponent: {
+                  component: 'ojButton', 
+                  label: 'Cancel'}, 
+                click: cancelHandler"></button>
+            </div>
+        </div>
+        <br/><br/>
+    </div>
+</div>
