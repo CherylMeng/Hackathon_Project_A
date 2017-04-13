@@ -10,6 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ import java.util.List;
  * Created by xiadai on 2017/4/13.
  */
 public class OrderController implements IService {
-    public void execute(Context context) throws JSONException {
+    public void execute(Context context) throws JSONException, IOException {
         JSONObject requestJSON = context.getJsonRequestObject();
         JSONObject responseJSON = new JSONObject();
         String operation = requestJSON.getString("operation");
@@ -35,6 +38,10 @@ public class OrderController implements IService {
                 jsonObject.put("PRICE", officeDepotInfo.getOfficeDepotPrice());
                 returnData.put(jsonObject);
             }
+
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\hackthon\\Hackathon_Project_A\\ODP\\ViewController\\public_html\\js\\data\\TabletComputers.json");
+            fileOutputStream.write(returnData.toString().getBytes());
+            fileOutputStream.close();
             returnCode = 201;
             returnMsg ="successful";
         }
@@ -50,7 +57,7 @@ public class OrderController implements IService {
             OfficeDepotInfo officeDepotInfo = new OfficeDepotInfo();
             officeDepotInfo.setOfficeDepotID(i);
             officeDepotInfo.setOfficeDepotTitle("ITEM_"+i);
-            officeDepotInfo.setPicDir("images"+i+"_default.jpg");
+            officeDepotInfo.setPicDir("images//"+i+"_default.jpg");
             officeDepotInfo.setOfficeDepotPrice(i*10);
             officeDepots.add(officeDepotInfo);
         }

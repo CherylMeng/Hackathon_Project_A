@@ -1,0 +1,20 @@
+[
+    {
+        "ID": 10,
+        "TITLE": "Apple Mac mini MGEM2CH/A - i5-1.4GHz 4G 500GB Intel HD Graphics 5000",
+        "PRICE": 3288.00,
+        "IMAGE_URL": "/images/10_default.jpg"
+    },
+    {
+        "ID": 11,
+        "TITLE": "DELL Vostro 3653-R14N8 (i5-6400 4G 500G DVD WIFI Win10)",
+        "PRICE": 3899.00,
+        "IMAGE_URL": "/images/10_default.jpg"
+    },
+	{
+        "ID": 12,
+        "TITLE": "Lenovo Y900 I7-6700K 16G 2T+256G SSD DVD GTX970 4G Win10",
+        "PRICE": 11588.00,
+        "IMAGE_URL": "/images/10_default.jpg"
+    }
+]
