@@ -112,15 +112,25 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojinputtext', 'ojs/ojselectcomb
     
     self.saveHandler = function(data, event){
         var pictureDataList = [];
-        for (var i = 0; i < self.pictureList.length; i++) {  
-                pictureDataList.push(self.pictureList[i].data);
+        for (var i = 0; i < self.pictureList().length; i++) {  
+                pictureDataList.push(encodeURI(self.pictureList()[i].data));
             }
-        var dataToPost = {'name': self.name,
-                        'price': self.price,
+        var dataToPost = {'name': self.name(),
+                        'price': self.price(),
                         'picture': pictureDataList
         };
-        
-        ko.dataFor($("#navDrawer>div")[0]).router.go("homepage");
+        str = "appCode=00000000&serviceName=ItemController&operation=addItem";
+        console.log(dataToPost);
+          $.ajax({
+          	url : "controller",
+          	type : "post",                
+          	data : JSON.stringify(dataToPost),
+          	dataType : "json",
+          	success : function(data) {
+          	  alert();
+              ko.dataFor($("#navDrawer>div")[0]).router.go("homepage");
+          	}
+          });
     };
     
     self.cancelHandler = function(data, event){
