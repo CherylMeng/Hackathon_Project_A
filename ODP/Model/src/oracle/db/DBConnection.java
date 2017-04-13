@@ -1,11 +1,9 @@
 package oracle.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +12,7 @@ import oracle.model.ActionType;
 import oracle.model.Catalog;
 import oracle.model.Notification;
 import oracle.model.OfficeDepot;
+import oracle.model.OfficeDepotInfo;
 import oracle.model.Order;
 import oracle.model.OrderItem;
 import oracle.model.Price;
@@ -32,8 +31,8 @@ public class DBConnection {
      */
     public static Connection getConnection() {
         String forName = "oracle.jdbc.OracleDriver";
-        String dbUrl = "jdbc:oracle:thin:@slc09xzf.us.oracle.com:1521:epps";
-        String dbUser = "c##procurement";
+        String dbUrl = "jdbc:oracle:thin:@localhost:1521:orcl";
+        String dbUser = "procurement";
         String dbPwd = "group3";
         Connection conn = null;
         try {
@@ -1116,7 +1115,100 @@ public class DBConnection {
         }
         return officeDepot;
     }
-    
+
+    public static ArrayList<String> getScreenshot(int id){
+        ArrayList<String> screenshots = new ArrayList<String>();
+        Connection conn = getConnection();
+        String sql = "select PICURL from T_SCREENSHOT where id =" +id;
+        Statement statement = null;
+        try{
+            statement = conn.createStatement();
+            ResultSet rs  = statement.executeQuery(sql);
+            while(rs.next()){
+                screenshots.add(DBConnection.clobToString(rs.getClob("PICURL")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return screenshots;
+
+    }
+    public static ArrayList<OfficeDepotInfo> getOfficeDepotList(){
+        ArrayList<OfficeDepotInfo> officeDepotInfos = new ArrayList<OfficeDepotInfo>();
+        Connection conn = getConnection();
+        String sql = "select * from T_ITEM";
+        Statement statement = null;
+        try{
+             statement = conn.createStatement();
+             ResultSet rs = statement.executeQuery(sql);
+             while(rs.next()){
+                OfficeDepotInfo officeDepotInfo = new OfficeDepotInfo();
+                officeDepotInfo.setOfficeDepotID(rs.getInt("ID"));
+                officeDepotInfo.setOfficeDepotTitle(rs.getString("TITLE"));
+                officeDepotInfo.setOfficeDepotPrice(rs.getDouble("PRICE"));
+                officeDepotInfo.setPicDir(DBConnection.clobToString(rs.getClob("PICURL")));
+                officeDepotInfos.add(officeDepotInfo);
+             }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection(conn);
+        }
+        return officeDepotInfos;
+    }
+    public static String clobToString(Clob clob) throws SQLException, IOException {
+        String reString = "";
+        Reader is = clob.getCharacterStream();
+        BufferedReader br = new BufferedReader(is);
+        String s = br.readLine();
+        StringBuffer sb = new StringBuffer();
+        while (s != null) {
+            sb.append(s);
+            s = br.readLine();
+        }
+        reString = sb.toString();
+        return reString;
+    }
+
+    public static boolean addOfficeDepot(int id, String title, Double price, String pricurl){
+        boolean result = false;
+        String sql = "INSERT INTO T_ITEM (ID , TITLE, PRICE, PICURL) values(?, ?, ?, ?)";
+        PreparedStatement pstmt = null;
+        Connection conn  = getConnection();
+        try{
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,id);
+            pstmt.setString(2, title);
+            pstmt.setDouble(3, price);
+            pstmt.setString(4, pricurl);
+            result = pstmt.executeUpdate()>0? true : false;
+        }catch(Exception e){
+            e.printStackTrace();;
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    public static boolean addScreenshot(int id, String pricurl){
+        boolean result = false;
+        String sql = "INSERT INTO T_SCREENSHOT (ID , PICURL) values(?, ?)";
+        PreparedStatement pstmt = null;
+        Connection conn  = getConnection();
+        try{
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,id);
+            pstmt.setString(2, pricurl);
+            result = pstmt.executeUpdate()>0? true : false;
+        }catch(Exception e){
+            e.printStackTrace();;
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
     public static ArrayList<OfficeDepot> getAllOfficeDepot() {
         ArrayList<Long> officeDepotIdList = new ArrayList<Long>();
         ArrayList<OfficeDepot> officeDepotList = new ArrayList<OfficeDepot>();
@@ -2185,25 +2277,9 @@ public class DBConnection {
     }
 
     public static void main(String[] args) {
-        //System.out.println(getConnection());
-        //getUserRoles();
-        //System.out.println(isUserExist("Test"));
-        //System.out.println(userAuth("huawei","huawei"));
-        //System.out.println(getRegisterUserRoleMap());
-        //System.out.println(updateUserStatus(1, DBConstant.USER_STATUS_ENABLED));
-        //System.out.println(getNewUserID(1));
-        //System.out.println(getUser(4, true, true).getUserInfo());
-        //System.out.println(deleteCatalogName(46));
-        //System.out.println(getCataLogByParent(0));
-        //updateCatalogName(46, "Bookbinding Supplie");
-        //System.out.println(getSkuByOfficeDepot(1));
-        //getOrders(1, DBConstant.ORDER_ROLE_REQUESTOR);
-        //System.out.println(getManagerMap());
-        //System.out.println(getSiteMap());
-        //System.out.println(getCurrencyMap());
-        //System.out.println(getOrderTypeMap());
-        //System.out.println(getNotificationNum(1));
-        //System.out.println(getToDoListNum(1));
-        //System.out.println(getUserByRole(DBConstant.USER_ROLE_SUPPLIER));
+        for(String obj : DBConnection.getScreenshot(1)){
+            System.out.println(obj);
+        }
+  System.out.print(DBConnection.getScreenshot(1));
     }
 }

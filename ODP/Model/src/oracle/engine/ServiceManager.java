@@ -49,7 +49,7 @@ public class ServiceManager {
 		try {
 			stmt = conn.createStatement();
 			rs = stmt
-					.executeQuery("select \"service_name\", \"class_name\" from \"t_service\"");
+					.executeQuery("select service_name, class_name from t_service");
 			while (rs.next()) {
 				try {
 					serviceManager.put(rs.getString(1), (IService) Class

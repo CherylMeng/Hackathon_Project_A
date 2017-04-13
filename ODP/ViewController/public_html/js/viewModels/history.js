@@ -7,11 +7,12 @@ define(['ojs/ojcore',
         function (oj, ko, $) {
             function HistoryViewModel() {
 
+                var self = this;
+
                 this.aOrders = ko.observableArray(JSON.parse("[" + localStorage.getItem("orders") + "]"));
                 this.dataSource = new oj.ArrayTableDataSource(this.aOrders, {idAttribute: "id"});
                 this.content = ko.observable("");
 
-                var self = this;
                 this.gotoList = function (event, ui) {
                     $("#history_listview").ojListView("option", "currentItem", null);
                     self.slide();
@@ -19,11 +20,24 @@ define(['ojs/ojcore',
 
                 this.gotoContent = function (event, ui) {
                     self.aOrders = ko.observableArray(JSON.parse("[" + localStorage.getItem("orders") + "]"));
-                    if (ui.option === 'currentItem' && ui.value != null)
-                    {
-                        var row = self.aOrders()[ui.value];
-                        self.content(row.content);
-                        self.slide();
+                    // refind id
+                    var id = 0;
+                    if (ui.item) {
+                        var $ele = ui.item[0];
+                        var aChildren = ui.item.parent().children();
+                        for (i = 0; i < aChildren.length; i++) {
+                            if ($ele === aChildren[i]) {
+                                id = i;
+                                break;
+                            }
+                        }
+
+                        if (ui.option === 'currentItem' && ui.value != null)
+                        {
+                            var row = self.aOrders()[id];
+                            self.content(row.content);
+                            self.slide();
+                        }
                     }
                 };
 
@@ -33,12 +47,14 @@ define(['ojs/ojcore',
                 }
 
                 this.onRefreshListView = function () {
-//                    this.aOrders(JSON.parse("[" + localStorage.getItem("orders") + "]"));
-                    $("#history_listview").ojListView("refresh");
+                    this.aOrders(JSON.parse("[" + localStorage.getItem("orders") + "]"));
+                    this.dataSource = new oj.ArrayTableDataSource(this.aOrders, {idAttribute: "id"});
                 }
 
                 this.onClearListView = function () {
-                    this.aOrders(JSON.parse("[" + localStorage.getItem("orders") + "]"));
+                    // for debug only
+//                    localStorage.setItem("orders", "");
+//                    localStorage.setItem("counter", 1);
                 }
 
             }

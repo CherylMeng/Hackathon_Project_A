@@ -114,26 +114,42 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojinputtext', 'ojs/ojselectcomb
         var pictureDataList = [];
         for (var i = 0; i < self.pictureList().length; i++) {  
                 pictureDataList.push(encodeURI(self.pictureList()[i].data));
-            }
-        var dataToPost = {'name': self.name(),
+            } 
+            
+       var dataToPost = {'name': self.name(),
                         'price': self.price(),
-                        'picture': pictureDataList.toString(),
+                        'picture':  self.pictureList()[0].data.toString(),
                         'appCode':'00000000',
                         'serviceName':'ItemController',
                         'operation':'addItem'
-        };
-        str = "appCode=00000000&serviceName=ItemController&operation=addItem";
-        console.log(dataToPost);
-          $.ajax({
+        };  
+        $.ajax({
           	url : "controller",
           	type : "post",                
           	data : dataToPost,
           	dataType : "json",
-          	success : function(data) {
-          	  alert();
-              ko.dataFor($("#navDrawer>div")[0]).router.go("homepage");
+          	success : function(data) { 
+                     ko.dataFor($("#navDrawer>div")[0]).router.go("homepage");
           	}
-          });
+        }); 
+        for (var i = 0; i < self.pictureList().length; i++) { 
+        var dataToPost = {'name': self.name(),
+                        'price': self.price(),
+                        'picture': self.pictureList()[i].data.toString().toString(),
+                        'appCode':'00000000',
+                        'serviceName':'ItemController',
+                        'operation':'addScreenshot'
+        };
+               $.ajax({
+          	url : "controller",
+          	type : "post",                
+          	data : dataToPost,
+          	dataType : "json",
+          	success : function(data) { 
+                     ko.dataFor($("#navDrawer>div")[0]).router.go("homepage");
+          	}
+        }); 
+        }
 
     };
     

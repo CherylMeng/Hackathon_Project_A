@@ -97,8 +97,9 @@
                                                     <!-- ko foreach: chemicals -->
                                                     <div class="oj-panel oj-panel-alt2 demo-detail-item" 
                                                          data-bind="style: {
-                                                                display: getDetailItemInitialDisplay($index())}">
-                                                        <span data-bind="text: name"></span>
+                                                                display: getDetailItemInitialDisplay($index()), backgroundImage: 'url('+ screenshot +')', 
+                     backgroundRepeat: 'no-repeat', backgroundSize: '100%', backgroundPosition: 'center', 
+                     height: '40vw', width: '100%'}">
                                                     </div>
                                                     <!-- /ko -->
                                                 </div>
@@ -121,9 +122,8 @@
                                                               click: masterClick">
                                                         <div class="oj-panel oj-panel-alt2 demo-master-item" 
                                                              data-bind="css: {
-                                                                'oj-selected': isMasterItemSelected($index())}">
-                                                            <span data-bind="text: name, 
-                                                                attr: {id: getMasterItemLabelId($index())}"></span>
+                                                                'oj-selected': isMasterItemSelected($index())}, style: {backgroundImage: 'url('+ screenshot +')', 
+                                                    backgroundRepeat: 'no-repeat', backgroundSize: '100%', backgroundPosition: 'center'}">
                                                         </div>
                                                     </a>
                                                     <!-- /ko -->

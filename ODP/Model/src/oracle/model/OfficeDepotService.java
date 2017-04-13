@@ -20,7 +20,24 @@ public class OfficeDepotService {
         ArrayList<OfficeDepot> officeDeporList = DBConnection.getOfficeDepotBySupplier(supplierID);
         return populateOfficeDepotInfo(officeDeporList);
     }
-    
+
+
+    public static ArrayList<OfficeDepotInfo> getOfficeDepotList(){
+        return DBConnection.getOfficeDepotList();
+    }
+
+    public static boolean  addOfficeDepot(int id, String title, Double price, String pricurl){
+        return DBConnection.addOfficeDepot(id, title, price, pricurl);
+    }
+
+    public static boolean addScreenshot(int id, String picurl){
+        return DBConnection.addScreenshot(id, picurl);
+    }
+
+    public static ArrayList<String> getScreenshot(int id){
+        return DBConnection.getScreenshot(id);
+
+    }
     public ArrayList<OfficeDepotInfo> getAllOfficeDepot(){
         ArrayList<OfficeDepot> officeDeporList = DBConnection.getAllOfficeDepot();
         return populateOfficeDepotInfo(officeDeporList);

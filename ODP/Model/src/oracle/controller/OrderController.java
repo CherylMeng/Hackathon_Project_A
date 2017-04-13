@@ -1,20 +1,20 @@
 package oracle.controller;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import oracle.engine.Context;
 import oracle.engine.IService;
-import oracle.model.AccountService;
-import oracle.model.OfficeDepot;
+
 import oracle.model.OfficeDepotInfo;
+
 import oracle.model.OfficeDepotService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xiadai on 2017/4/13.
@@ -28,7 +28,7 @@ public class OrderController implements IService {
         String returnMsg = null;
         JSONArray returnData = null;
         if("getItemList".equals(operation)){
-            List<OfficeDepotInfo> officeDepots =mock();
+            List<OfficeDepotInfo> officeDepots = OfficeDepotService.getOfficeDepotList();
             returnData = new JSONArray();
             for(OfficeDepotInfo officeDepotInfo: officeDepots){
                 JSONObject jsonObject = new JSONObject();
@@ -39,7 +39,7 @@ public class OrderController implements IService {
                 returnData.put(jsonObject);
             }
 
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\hackthon\\Hackathon_Project_A\\ODP\\ViewController\\public_html\\js\\data\\TabletComputers.json");
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\Training\\Hackathon_Project_A\\ODP\\ViewController\\public_html\\js\\data\\TabletComputers.json");
             fileOutputStream.write(returnData.toString().getBytes());
             fileOutputStream.close();
             returnCode = 201;
@@ -51,16 +51,16 @@ public class OrderController implements IService {
         context.setJsonResponseObject(responseJSON);
     }
 
-    public List<OfficeDepotInfo> mock(){
-        List<OfficeDepotInfo> officeDepots = new ArrayList<OfficeDepotInfo>();
-        for(int i = 10; i<=50; i++){
-            OfficeDepotInfo officeDepotInfo = new OfficeDepotInfo();
-            officeDepotInfo.setOfficeDepotID(i);
-            officeDepotInfo.setOfficeDepotTitle("ITEM_"+i);
-            officeDepotInfo.setPicDir("images//"+i+"_default.jpg");
-            officeDepotInfo.setOfficeDepotPrice(i*10);
-            officeDepots.add(officeDepotInfo);
-        }
-        return officeDepots;
-    }
+//    public List<OfficeDepotInfo> mock(){
+//        List<OfficeDepotInfo> officeDepots = new ArrayList<OfficeDepotInfo>();
+//        for(int i = 10; i<=50; i++){
+//            OfficeDepotInfo officeDepotInfo = new OfficeDepotInfo();
+//            officeDepotInfo.setOfficeDepotID(i);
+//            officeDepotInfo.setOfficeDepotTitle("ITEM_"+i);
+//            officeDepotInfo.setPicDir("images//"+i+"_default.jpg");
+//            officeDepotInfo.setOfficeDepotPrice(i*10);
+//            officeDepots.add(officeDepotInfo);
+//        }
+//        return officeDepots;
+//    }
 }
