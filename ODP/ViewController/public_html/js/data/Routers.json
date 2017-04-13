@@ -1,0 +1,14 @@
+[
+    {
+        "ID": 33,
+        "TITLE": "TP-LINK TL-WDR6500 1300M 11AC Wireless Router",
+        "PRICE": 194.00,
+        "IMAGE_URL": "/images/26_default.jpg"
+    },
+	{
+        "ID": 34,
+        "TITLE": "TP-Link TL-WDR5620 1200M Router White",
+        "PRICE": 135.00,
+        "IMAGE_URL": "/images/26_default.jpg"
+    }
+]

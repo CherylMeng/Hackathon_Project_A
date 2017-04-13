@@ -26,4 +26,7 @@ ul {
   ul li {
     list-style: none; }
 
+.demo-griditem-content button {
+  float: right; }
+
 /*# sourceMappingURL=main.css.map */

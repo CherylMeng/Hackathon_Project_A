@@ -21,6 +21,11 @@ public class OfficeDepotService {
         return populateOfficeDepotInfo(officeDeporList);
     }
     
+    public ArrayList<OfficeDepotInfo> getAllOfficeDepot(){
+        ArrayList<OfficeDepot> officeDeporList = DBConnection.getAllOfficeDepot();
+        return populateOfficeDepotInfo(officeDeporList);
+    }
+    
     public HashMap<String, ArrayList<SKU>> getOfficeDepotDetails(long officeDepotID){
         HashMap<String, ArrayList<SKU>> map = new HashMap<String, ArrayList<SKU>>();
         map.put("SKU", DBConnection.getSkuByOfficeDepot(officeDepotID));
@@ -125,6 +130,9 @@ public class OfficeDepotService {
             for (SKU sku : item.getSkuList()) {
                 if (sku.getSkuID() == 15){
                     officeDepotInfo.setPicDir(sku.getSkuValue());
+                }
+                if (sku.getSkuID() == 2){
+                    officeDepotInfo.setOfficeDepotTitle(sku.getSkuValue());
                 }
             }
             infoList.add(officeDepotInfo);

@@ -3,15 +3,17 @@ package oracle.model;
 
 public class OfficeDepotInfo {
     
-   private long officeDepotID;
-   
-   private double officeDepotPrice;
-   
-   private long curencyID;
-   
-   private String currencySymbol;
-   
-   private String picDir;
+    private String officeDepotTitle;
+
+    private long officeDepotID;
+
+    private double officeDepotPrice;
+
+    private long curencyID;
+
+    private String currencySymbol;
+
+    private String picDir;
 
     public void setOfficeDepotID(long officeDepotID) {
         this.officeDepotID = officeDepotID;
@@ -51,5 +53,13 @@ public class OfficeDepotInfo {
 
     public String getPicDir() {
         return picDir;
+    }
+
+    public void setOfficeDepotTitle(String officeDepotTitle) {
+        this.officeDepotTitle = officeDepotTitle;
+    }
+
+    public String getOfficeDepotTitle() {
+        return officeDepotTitle;
     }
 }

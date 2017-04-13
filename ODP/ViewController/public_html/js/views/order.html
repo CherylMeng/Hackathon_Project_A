@@ -1,0 +1,237 @@
+<!--
+ Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+-->
+<div class="oj-hybrid-padding">
+    <h2>Catalog</h2>
+    <div id = "root">        
+        <div class ="order_container">
+            <div class = "order_ojtree_left" id="catalog_tree" 
+                 data-bind="ojComponent:
+               {
+                 component: 'ojTree',
+                 selectionMode: 'multiple',
+                 optionChange: handleSelectCatalogInTree,
+                 data:{data: getCatalogJson}
+               }">
+            </div>
+            <div class = "order_displaylist_right" id = "products_view">
+                <div class="oj-flex">
+                    <div class="oj-lg-2 oj-md-3 oj-sm-only-hide oj-flex-item">    
+
+                        <div class="refined">Refined by</div>
+
+                        <label id="price_filter_lbl">Price</label>
+                        <div id="price_filter" aria-labelledby="price_filter_lbl"
+                             data-bind="ojComponent: {
+                                                    component: 'ojCheckboxset', 
+                                                    value: currentPrice, rootAttributes: {style: 'padding-bottom: 15px'}, optionChange: handleFilterChanged}" >
+                            <span class="oj-choice-item">
+                                <input id="price_opt1" type="checkbox" value="lt30">
+                                <label for="price_opt1">Less than $30</label>
+                            </span>
+                            <span class="oj-choice-item">
+                                <input id="price_opt2" type="checkbox" value="30to40">
+                                <label for="price_opt2">$30 - $39.99</label>
+                            </span>
+                            <span class="oj-choice-item">
+                                <input id="price_opt3" type="checkbox" value="40to50">
+                                <label for="price_opt3">$40 - $50</label>
+                            </span>
+                            <span class="oj-choice-item">
+                                <input id="price_opt4" type="checkbox" value="gt50">
+                                <label for="price_opt4">Greater than $50</label>
+                            </span>
+                        </div>
+
+                        <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-flex-item">
+                            <button id="order_cart_popup_button" 
+                                    data-bind="ojComponent: {
+                                                    component:'ojButton', 
+                                                    icons: {start:'oj-fwk-icon oj-fwk-icon-clock'}, 
+                                                    label: 'Check my cart'}, 
+                                                click: onPopCheckMyCart()">                                      
+                            </button>
+                            <div style="display:none" id="order_my_cart_modelessDialog" title="My Cart" 
+                                 data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide', modality: 'modeless'}">
+                                <div class="oj-dialog-body" id = "order_my_cart_modelessDialog_message">
+                                                                        This is a pop dialog to show the cart listView. 
+                                                                        <ul id="order_my_cart_modelessDialog_listview" aria-label="list with static data" 
+                                                                            data-bind="ojComponent: {component: 'ojListView', selectionMode: 'multiple'}">
+                                                                        </ul>                     
+<!--                                    <table id="cart_table" summary="Cart List" aria-label="Cart Table"
+                                           data-bind="ojComponent: {component: 'ojTable', 
+                                                                    data: null, 
+                                                                    columns: [{headerText: 'Product Id', 
+                                                                    field: 'ID'},
+                                                                    {headerText: 'Product Name', 
+                                                                    field: 'TITLE'}, 
+                                                                    {headerText: 'Product Number', 
+                                                                    field: 'PRICE'}]}">
+                                    </table>-->
+                                </div>
+                                <div class="oj-dialog-footer">                                
+                                    <button id="ConfirmButton" data-bind="click:onConfirmOrder,enable: true,
+                                                ojComponent: {component: 'ojButton', label: 'Confirm and Submit the Order'}"> </button>
+                                    <button id="CancelOrderButton" data-bind="click:onDeleteAllItemsInCart,
+                                                ojComponent: {component: 'ojButton', label: 'Cancel the Order'}"> </button>
+                                </div>
+                            </div>
+                            <div id="order_my_cart_pictureDialog" title="Picture Gallary" 
+                                 data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide',
+                                                        rootAttributes: { 'style': 'width: 70vw; height: auto;'}}">
+                                <div class="oj-dialog-body" id = "order_my_cart_pictureDialog_message">
+                                    <div id="filmstrip-masterdetail-example">
+                                        <div class="oj-panel" style="margin: 20px;">
+
+                                            <div id="detailFilmStripDiv" 
+                                                 style="position: relative;margin-bottom: 5px;">
+                                                <div id="detailFilmStrip" 
+                                                     aria-label="Detail set of chemicals"
+                                                     data-bind="ojComponent: {
+                                                                component: 'ojFilmStrip', 
+                                                                create: handleDetailCreate,
+                                                                maxItemsPerPage: 1,
+                                                                currentItem: currDetailPage,
+                                                                arrowPlacement: 'overlay'}">
+                                                    <!-- ko foreach: chemicals -->
+                                                    <div class="oj-panel oj-panel-alt2 demo-detail-item" 
+                                                         data-bind="style: {
+                                                                display: getDetailItemInitialDisplay($index())}">
+                                                        <span data-bind="text: name"></span>
+                                                    </div>
+                                                    <!-- /ko -->
+                                                </div>
+                                            </div> <!-- end detailFilmStripDiv -->
+
+                                            <label class="oj-helper-hidden-accessible"
+                                                   id="masterItemSelectedLabel">(currently selected)</label>
+
+                                            <div id="masterFilmStripDiv">
+                                                <div id="masterFilmStrip" 
+                                                     aria-label="Master set of chemicals"
+                                                     data-bind="ojComponent: {component: 'ojFilmStrip'}">
+                                                    <!-- ko foreach: chemicals -->
+                                                    <a href="#" 
+                                                       aria-controls="detailFilmStrip" 
+                                                       data-bind="style: {
+                                                                display: getMasterItemInitialDisplay($index())}, 
+                                                              attr: {
+                                                                'aria-labelledby': getMasterItemLabelledBy($index())}, 
+                                                              click: masterClick">
+                                                        <div class="oj-panel oj-panel-alt2 demo-master-item" 
+                                                             data-bind="css: {
+                                                                'oj-selected': isMasterItemSelected($index())}">
+                                                            <span data-bind="text: name, 
+                                                                attr: {id: getMasterItemLabelId($index())}"></span>
+                                                        </div>
+                                                    </a>
+                                                    <!-- /ko -->
+                                                </div>
+                                            </div> <!-- end masterFilmStripDiv -->
+
+                                        </div>
+                                    </div>                    
+                                </div>
+                                <div class="oj-dialog-footer">
+                                    <button id="ConfirmButton" data-bind="click: closePictureDialog,
+                                                ojComponent: {component: 'ojButton', label: 'Close'}"> </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="oj-flex-item">
+                            <p id="last" class="bold"> A Glimpse of Products in Cart: 
+                                <span id="order_cart_of_products" data-bind='text: selectedProductInfos'></span>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="oj-lg-10 oj-md-9 oj-sm-12 oj-flex-item">    
+
+                        <div class="oj-flex">
+                            <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-flex-item">
+                                <label for="sortBy" class="oj-label-inline">Sort by:</label>
+                                <select id="sortBy" data-bind="ojComponent: {component: 'ojSelect',
+                                                    value: currentSort, rootAttributes: {style:'max-width:11em'}, optionChange: handleSortCriteriaChanged}">
+                                    <option value="lh">Price: Low to High</option>
+                                    <option value="hl">Price: High to Low</option>
+                                </select>
+                            </div>                           
+
+                            <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-flex-item">
+                                <div id="paging" data-bind="ojComponent: {component: 'ojPagingControl', data: dataListView, pageSize: 3}">
+                                </div>
+                            </div>
+
+                            <ul id="listview" aria-label="list with external sort and filter controls" 
+                                data-bind="ojComponent: {component: 'ojListView', data: dataListView, item: {template: 'product_template'}, selectionMode: 'single', rootAttributes: {style: 'width:100%'} }">
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+                    <script type="text/html" id="product_template">
+                        <li data-bind="attr: {id: ID}" class = "order_single_product_container">
+                            <div class="oj-flex">
+                                <div class="oj-lg-3 oj-md-3 oj-sm-4 oj-flex-item" style="max-width:150px;padding-left:0;padding-right:10px">
+                                    <div data-bind="style: { backgroundImage: 'url('+ IMAGE_URL +')', 
+                     backgroundRepeat: 'no-repeat', backgroundSize: '100%', backgroundPosition: 'center', 
+                     height: '172px', width: '100%' },click: $parent.popPictureDialog">
+                                    </div>
+                                </div>
+                                <div class="oj-lg-9 oj-md-9 oj-sm-8 oj-flex-item">
+                                    <div class="oj-flex">
+                                        <div class="oj-lg-9 oj-md-9 oj-sm-12 oj-flex-item">
+                                            <div>
+                                                <div class = "order_single_product_title">
+                                                    <h4><a href="#" data-bind="text: TITLE"></a></h4>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="oj-lg-3 oj-md-3 oj-sm-12 oj-flex-item">
+                                            <div>
+                                                <div class="price-block">
+                                                    <div class="priceblock priceblock-medium">
+                                                        <div class="medium-item-price"><span class="denominator" data-bind="text: $parent.currencyConverter.format(PRICE)"></span></div>
+                                                    </div>
+                                                </div>
+                                                <div style="padding: 5px 0">
+                                                    <button class="button_add_to_cart" 
+                                                            data-bind= "  click: $parent.onAddToCart(), 
+                                                                                                ojComponent: { component: 'ojButton', 
+                                                                                                    label: 'Add to cart'}">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        </script>
+                        <script type="text/html" id="product_inputNumber_template">
+                            <td>
+                                <div data-bind="ojComponent: {component: 'ojInputNumber', 
+                                                                    max:5,
+                                                                    min:1, 
+                                                                    step:1, 
+                                                                    value: product_number}"                                  
+                                     style="width:60px;height:15px;">
+                                </div>
+                            </td>
+                        </script>
+                        
+                        </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+

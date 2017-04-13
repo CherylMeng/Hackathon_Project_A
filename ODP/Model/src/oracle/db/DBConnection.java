@@ -1116,6 +1116,38 @@ public class DBConnection {
         }
         return officeDepot;
     }
+    
+    public static ArrayList<OfficeDepot> getAllOfficeDepot() {
+        ArrayList<Long> officeDepotIdList = new ArrayList<Long>();
+        ArrayList<OfficeDepot> officeDepotList = new ArrayList<OfficeDepot>();
+        Connection conn = getConnection();
+        String selectOfficeDepotSql = "SELECT ITEM_ID FROM OFFICE_DEPOT";
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(selectOfficeDepotSql);
+            if (rs != null) {
+                while (rs.next()) {
+                    officeDepotIdList.add(rs.getLong("ITEM_ID"));
+                }
+            }
+            for (Long id : officeDepotIdList) {
+                officeDepotList.add(getOfficeDepot(id));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return officeDepotList;
+    }
 
     public static ArrayList<OfficeDepot> getOfficeDepotByCatalog(long catalogID) {
         Connection conn = getConnection();
