@@ -7,9 +7,7 @@ import oracle.db.DBConnection;
 
 public class OfficeDepotService {
     
-    private static CatalogService cs = new CatalogService();
-    
-    private static CatalogTree tree = cs.getTree();
+    private static CatalogTree tree = CatalogService.getTree();
     
     private static HashMap<String, Long> currencyMap = DBConnection.getCurrencyMap();
     
@@ -20,6 +18,11 @@ public class OfficeDepotService {
     
     public ArrayList<OfficeDepotInfo> getOfficeDepotBySupplier(long supplierID){
         ArrayList<OfficeDepot> officeDeporList = DBConnection.getOfficeDepotBySupplier(supplierID);
+        return populateOfficeDepotInfo(officeDeporList);
+    }
+    
+    public ArrayList<OfficeDepotInfo> getAllOfficeDepot(){
+        ArrayList<OfficeDepot> officeDeporList = DBConnection.getAllOfficeDepot();
         return populateOfficeDepotInfo(officeDeporList);
     }
     
@@ -127,6 +130,9 @@ public class OfficeDepotService {
             for (SKU sku : item.getSkuList()) {
                 if (sku.getSkuID() == 15){
                     officeDepotInfo.setPicDir(sku.getSkuValue());
+                }
+                if (sku.getSkuID() == 2){
+                    officeDepotInfo.setOfficeDepotTitle(sku.getSkuValue());
                 }
             }
             infoList.add(officeDepotInfo);
